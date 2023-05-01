@@ -10,3 +10,8 @@
 - As a user, I can repeatedly use the application to get summaries
 - As a user, I can see my previously searched articles
 - As a user, I expect errors handled gracefully 
+
+- As a user, I can enter a movie title and receive a summary of the movie
+- As a user, I can enter a movie title and receive a review of the positives and negatives of the movie
+- As a user, I can enter a book title and receive a summary of the book
+- As a user, I can enter a book title and receive a review of the positives and negatives of the book
