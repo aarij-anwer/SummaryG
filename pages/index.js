@@ -3,6 +3,15 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { PrismaClient } from '@prisma/client'
+import Header from './components/Header'
+import Navigation from './components/Navigation'
+import Search from './components/Search'
+import RecentSearches from './components/RecentSearches'
+import Title from './components/Title'
+import Summary from './components/Summary'
+import Review from './components/Review'
+import OneWordReview from './components/OneWordReview'
+import SimilarContent from './components/SimilarContent'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +25,21 @@ export default function Home({blogs}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-      <h1 className={styles.title}>Welcome, to your LHL Skeleton!</h1>
+        <Header/>
+        <Navigation/>
+        <Search/>
+        <OneWordReview/>
+        <RecentSearches/>
+        <Title/>
+        <Summary/>
+        <Review/>
+        <SimilarContent/>
+      </main>
+    </>
+  )
+}
+
+{/* <h1 className={styles.title}>Welcome, to your LHL Skeleton!</h1>
       <p className={styles.subtitle}>Please read the the skeleton set up for this should be in the read me one directory above your current.</p>
         <div className={styles.description}> 
           <Image
@@ -36,11 +59,8 @@ export default function Home({blogs}) {
               <p>{blog.content}</p>
             </div>
           ))}
-        </div> 
-      </main>
-    </>
-  )
-}
+        </div> */}
+
 
 export async function getStaticProps() {
   const prisma = new PrismaClient()
