@@ -5,7 +5,38 @@
 }
 
 .main {
+  display: flex;
+  flex-direction:column;
   text-align: center;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.leftside {
+  display: flex;
+  flex-direction:column;
+  text-align: left;
+  border: 1px solid black;
+  width: 20%;
+}
+
+.center {
+  display: flex;
+  flex-direction:column;
+  text-align: left;
+  border: 1px solid black;
+  width: 60%;
+}
+
+.rightside {
+  display: flex;
+  flex-direction:column;
+  text-align: left;
+  border: 1px solid black;
+  width: 20%;
 }
 
 .subtitle {
@@ -22,5 +53,60 @@
 }
 
 .title {
-  font-size: 50px;
+  font-family: 'Bruno Ace SC', cursive;
+  font-size: 100px;
+  font-weight: bold;
+  color: green;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+}
+
+.articles {
+  background-color: greenyellow;
+}
+
+.movies {
+  background-color: aquamarine;
+}
+
+.books {
+  background-color:lightskyblue;
+}
+
+.buttons {
+  width: 33.333333%;
+  font-size: 30px;
+}
+
+.buttons:hover {
+  color: green;
+}
+
+.searchbar {
+  display: flex;
+  width: 100%;
+  margin-bottom: 30px;
+  border-bottom: 1px solid green;
+}
+
+.searchform {
+  width: 100%;
+}
+
+.searchbox {
+  width: 100%;
+  font-size: 30px;
+  background-color: aquamarine;
+  text-align: left;
+}
+
+.searchbutton {
+  font-size: 30px;
+  padding-left:1em;
+  padding-right: 1em;
+  background-color: green;
+  color: white;
 }
