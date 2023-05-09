@@ -4,17 +4,21 @@ export default function Search(props) {
 
   return (
     <div className={styles.searchbar}>
-      <form className={styles.searchform} onSubmit={event => event.preventDefault()} autoComplete="off">
+      <form
+        className={styles.searchform}
+        onSubmit={event => event.preventDefault()}
+        autoComplete="off"
+      >
         <input
           className={styles.searchbox}
           name="searchTerm"
           type="text"
           placeholder="Enter URL"
-          value={''}
-          onChange={''}
+          value={props.searchTerm}
+          onChange={props.handleUrlChange}
         />
       </form>
-      <button className={styles.searchbutton} onClick={''}>Search</button>
+      <button className={styles.searchbutton} onClick={props.handleSubmit}>Search</button>
     </div>
   );
 }
