@@ -1,6 +1,8 @@
 export default function Title(props) {
 
   return (
-      <div>Title</div>
+    <div>
+      <span>Movie Title:</span> {props.title}
+    </div>
   );
 }
