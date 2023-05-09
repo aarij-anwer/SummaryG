@@ -38,14 +38,3 @@ export default function Home({ results }) {
     </>
   )
 }
-
-// export async function getStaticProps() {
-//   const prisma = new PrismaClient();
-//   const results = await prisma.result.findMany();
-
-//   console.log(results);
-
-//   return {
-//     props: { results }
-//   }
-// }
