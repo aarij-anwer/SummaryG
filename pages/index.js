@@ -35,22 +35,17 @@ export default function Home({ results }) {
         <Review />
         <SimilarContent />
       </main>
-      {results && results.map(result => (
-        <div key={result.id}>
-          <p>{result.summary}</p>
-          <p>{result.review}</p>
-        </div>))}
     </>
   )
 }
 
-export async function getStaticProps() {
-  const prisma = new PrismaClient();
-  const results = await prisma.result.findMany();
+// export async function getStaticProps() {
+//   const prisma = new PrismaClient();
+//   const results = await prisma.result.findMany();
 
-  console.log(results);
+//   console.log(results);
 
-  return {
-    props: { results }
-  }
-}
+//   return {
+//     props: { results }
+//   }
+// }
