@@ -1,6 +1,8 @@
 export default function Review(props) {
 
   return (
-      <div>Review</div>
+    <div>
+      <span>Review:</span> {props.review}
+    </div>
   );
 }
