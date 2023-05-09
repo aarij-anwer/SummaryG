@@ -10,28 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-  Blog  Blog[]
+model Result {
+  id            Int    @id @default(autoincrement())
+  searchID      Int    @unique
+  summary       String
+  review        String
+  oneWordReview String
+  similar       String
+  search        Search @relation(fields: [searchID], references: [id])
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
-model Blog {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Search {
+  id         Int     @id @default(autoincrement())
+  type       String
+  searchTerm String
+  Result     Result?
 }

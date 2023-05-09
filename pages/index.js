@@ -15,7 +15,7 @@ import SimilarContent from './components/SimilarContent'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({blogs}) {
+export default function Home({ results }) {
   return (
     <>
       <Head>
@@ -25,48 +25,32 @@ export default function Home({blogs}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Header/>
-        <Navigation/>
-        <Search/>
-        <OneWordReview/>
-        <RecentSearches/>
-        <Title/>
-        <Summary/>
-        <Review/>
-        <SimilarContent/>
+        <Header />
+        <Navigation />
+        <Search />
+        <OneWordReview />
+        <RecentSearches />
+        <Title />
+        <Summary />
+        <Review />
+        <SimilarContent />
       </main>
+      {results && results.map(result => (
+        <div key={result.id}>
+          <p>{result.summary}</p>
+          <p>{result.review}</p>
+        </div>))}
     </>
   )
 }
 
-{/* <h1 className={styles.title}>Welcome, to your LHL Skeleton!</h1>
-      <p className={styles.subtitle}>Please read the the skeleton set up for this should be in the read me one directory above your current.</p>
-        <div className={styles.description}> 
-          <Image
-            src="https://http.cat/100"
-            alt="Vercel Logo"
-            className={styles.vercelLogo}
-            width={300}
-            height={250}
-            priority
-          />
-        </div>
-        <div className={styles.dbContainer}>
-          <h3>Values pulled from your DB, these values can be updated or change by typing &rdquo;npx prisma studio&rdquo; in your terminal</h3>
-          {blogs && blogs.map(blog => (
-            <div key={blog.id}>
-              <h4>{blog.title}</h4>
-              <p>{blog.content}</p>
-            </div>
-          ))}
-        </div> */}
-
-
 export async function getStaticProps() {
-  const prisma = new PrismaClient()
-  const blogs = await prisma.blog.findMany()
+  const prisma = new PrismaClient();
+  const results = await prisma.result.findMany();
+
+  console.log(results);
 
   return {
-    props : { blogs }
+    props: { results }
   }
 }
