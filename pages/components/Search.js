@@ -1,24 +1,39 @@
+import { useRef } from "react"
+import axios from "axios";
 import styles from '@/styles/Home.module.css'
 
 export default function Search(props) {
+  const inputRef = useRef();
+
+  const onClear = () => {
+    inputRef.current.value = "";
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userInput = inputRef.current.value;
+    const searchType = props.searchType
+    axios.post('/api/searchAPI', {userInput, searchType})
+
+    onClear();
+  }
 
   return (
     <div className={styles.searchbar}>
       <form
         className={styles.searchform}
-        onSubmit={event => event.preventDefault()}
+        onSubmit={handleSubmit}
         autoComplete="off"
       >
         <input
-          className={styles.searchbox}
+          className={styles.searchbox + ' ' + styles[props.searchType]}
           name="searchTerm"
           type="text"
-          placeholder="Enter URL"
-          value={props.searchTerm}
-          onChange={props.handleUrlChange}
+          ref={inputRef}
+          placeholder="Enter URL or search term"
         />
       </form>
-      <button className={styles.searchbutton} onClick={props.handleSubmit}>Search</button>
+      <button className={styles.searchbutton} onClick={handleSubmit}>Search</button>
     </div>
   );
 }
