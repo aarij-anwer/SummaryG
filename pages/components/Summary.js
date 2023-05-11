@@ -2,8 +2,8 @@ export default function Summary(props) {
   return (
     <div>
       <div>
-        <span>Executive Summary:</span>
-        <p>{props.executiveSummary}</p>
+        <span>Summary:</span>
+        <p>{props.summary}</p>
       </div>
       {props.relatedContent && (
         <div>

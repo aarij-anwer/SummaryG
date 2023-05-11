@@ -5,7 +5,7 @@ import styles from '@/styles/Home.module.css'
 export default function Search(props) {
   const inputRef = useRef();
 
-  const onClear = () => {
+  const clearInputRef = () => {
     inputRef.current.value = "";
   };
 
@@ -14,8 +14,8 @@ export default function Search(props) {
     const userInput = inputRef.current.value;
     const searchType = props.searchType
     axios.post('/api/searchAPI', {userInput, searchType})
-    axios.get('/api/openai', {userInput, searchType});
-    onClear();
+
+    clearInputRef();
   }
 
   return (
