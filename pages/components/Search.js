@@ -12,11 +12,18 @@ export default function Search(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInput = inputRef.current.value;
-    const searchType = props.searchType
-    axios.post('/api/searchAPI', {userInput, searchType})
-
+    const searchType = props.searchType;
+    axios.post('/api/searchAPI', { userInput, searchType })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
     clearInputRef();
-  }
+  };
+
 
   return (
     <div className={styles.searchbar}>

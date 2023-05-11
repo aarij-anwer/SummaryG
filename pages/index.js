@@ -30,14 +30,29 @@ export default function Home({ results }) {
   //useEffect initialization
   useEffect(() => {
     axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
-    .then(res => {
-      setTitle(res.data.content[0].title);
-      setSummary(res.data.content[0].summary);
-      setReview(res.data.content[0].review);
-      setOneWordReview(res.data.content[0].oneWordReview);
-      setSimilarContent(res.data.content[0].similar);
-    })
+      .then(res => {
+        if (res.data && res.data.content && res.data.content[0]) {
+          setTitle(res.data.content[0].title);
+          setSummary(res.data.content[0].summary);
+          setReview(res.data.content[0].review);
+          setOneWordReview(res.data.content[0].oneWordReview);
+          setSimilarContent(res.data.content[0].similar);
+        } else {
+          console.log('Response data structure is not as expected.')
+        }
+      })
+      .catch(error => {
+        console.error('Fetching data failed: ', error);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
   }, [searchIdState]);
+
 
   return (
     <>
@@ -53,26 +68,27 @@ export default function Home({ results }) {
 
       </Head>
       <main className={styles.main}>
-        <Header/>
-        <Navigation 
+        <Header />
+        <Navigation
           onSearchTypeChange={setSearchState}
           searchType={searchState}
         />
         <Search
           searchType={searchState}
+          onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
-            <RecentSearches/>
+            <RecentSearches searches={results} />
           </div>
           <div className={styles.center}>
-            <Title title={title}/>
-            <Summary summary={summary}/>
-            <Review review={review}/>
+            <Title title={title} />
+            <Summary summary={summary} />
+            <Review review={review} />
           </div>
           <div className={styles.rightside}>
-            <OneWordReview oneWordReview={oneWordReview}/>
-            <SimilarContent similarContent={similarContent}/>
+            <OneWordReview oneWordReview={oneWordReview} />
+            <SimilarContent similarContent={similarContent} />
           </div>
         </div>
       </main>
