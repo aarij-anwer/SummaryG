@@ -26,6 +26,8 @@ export default function Home({ results }) {
   const [review, setReview] = useState();
   const [oneWordReview, setOneWordReview] = useState();
   const [similarContent, setSimilarContent] = useState();
+  const [recentSearches, setRecentSearches] = useState();
+  
 
   //useEffect initialization
   useEffect(() => {
@@ -53,6 +55,17 @@ export default function Home({ results }) {
       });
   }, [searchIdState]);
 
+  //useEffect initialization for recent searches
+  useEffect(() => {
+    axios.get('api/recentSearchAPI')
+      .then(res => {
+        setRecentSearches(res.data.recentSearches);
+      })
+      .catch(error => {
+        console.error('Fetching data failed: ', error);
+      });
+  }, [searchIdState]);
+
 
   return (
     <>
@@ -62,8 +75,8 @@ export default function Home({ results }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
-        <link rel="preconnect" href="https://fonts.googleapis.com"/>
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet"></link>
 
       </Head>
@@ -79,7 +92,7 @@ export default function Home({ results }) {
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
-            <RecentSearches searches={results} />
+            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
           </div>
           <div className={styles.center}>
             <Title title={title} />
