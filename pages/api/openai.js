@@ -6,6 +6,8 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 const prisma = new PrismaClient();
+let sID;
+let rID;
 
 //call openai with a prompt and max_tokens (size)
 async function generateCompletions(prompt, max_tokens) {
@@ -42,8 +44,16 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
       similar
     },
   });
+
+  sID = result.searchID;
+  rID = result.id;
+
   return result;
 }
+
+// async function getIDs(resultID) {
+
+// }
 
 //handler for the openai.js
 export default async function handler(req, res) {
@@ -83,10 +93,13 @@ export default async function handler(req, res) {
     console.log("Review", review);
     console.log("OneWord", oneword);
     console.log("Similar", similar);
-
+    
     const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
+    console.log("resultID", resultID);
+    
+    // const ids = await getIDs(resultID);
 
-    res.status(200).json({ summary, review, oneword, similar });
+    res.status(200).json({ summary, review, oneword, similar, sID, rID });
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
