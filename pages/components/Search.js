@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef } from "react";
 import axios from "axios";
 import styles from '@/styles/Home.module.css'
 
@@ -9,13 +9,19 @@ export default function Search(props) {
     inputRef.current.value = "";
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userInput = inputRef.current.value;
-    const searchType = props.searchType
-    axios.post('/api/searchAPI', {userInput, searchType})
-
-    clearInputRef();
+    try {
+      const res = await axios.post('/api/searchAPI', { userInput, searchType: props.searchType });
+      // Check the response searchID for setting the state of the search on home page
+      if (res.data && res.data.searchID) {
+        props.onSubmit(res.data.searchID);
+      }
+      clearInputRef();
+    } catch (error) {
+      console.error('Search request failed: ', error);
+    }
   }
 
   return (
