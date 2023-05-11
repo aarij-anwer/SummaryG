@@ -9,11 +9,15 @@ export default function Search(props) {
     inputRef.current.value = "";
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const userInput = inputRef.current.value;
     const searchType = props.searchType;
-    axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
+    const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
+    props.onSubmit(result.data.sID);
+
+    console.log("result", result);
+
     // axios.post('/api/searchAPI', { userInput, searchType })
     //   .catch(function (error) {
     //     if (error.response) {
