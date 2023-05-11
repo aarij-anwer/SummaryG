@@ -14,7 +14,7 @@ export default function Search(props) {
     const userInput = inputRef.current.value;
     const searchType = props.searchType
     axios.post('/api/searchAPI', {userInput, searchType})
-    axios.get('/api/openai', {userInput, searchType});
+    //axios.get('/api/openai', {userInput, searchType});
     onClear();
   }
 
