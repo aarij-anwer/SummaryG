@@ -20,7 +20,7 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home({ results }) {
   //useState initialization
   const [searchState, setSearchState] = useState("articles");
-  const [searchIdState, setSearchIdState] = useState(17);
+  const [searchIdState, setSearchIdState] = useState(14);
   const [title, setTitle] = useState();
   const [summary, setSummary] = useState();
   const [review, setReview] = useState();
