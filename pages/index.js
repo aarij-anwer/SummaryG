@@ -29,9 +29,8 @@ export default function Home({ results }) {
 
   //useEffect initialization
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
+    axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
+      .then(res => {
         if (res.data && res.data.content && res.data.content[0]) {
           setTitle(res.data.content[0].title);
           setSummary(res.data.content[0].summary);
@@ -41,12 +40,19 @@ export default function Home({ results }) {
         } else {
           console.log('Response data structure is not as expected.')
         }
-      } catch (error) {
-        console.error('Fetching data failed: ', error)
-      }
-    }
-    fetchData();
+      })
+      .catch(error => {
+        console.error('Fetching data failed: ', error);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
   }, [searchIdState]);
+
 
   return (
     <>
