@@ -3,14 +3,37 @@ import { PrismaClient } from '@prisma/client';
 
 export default async function handler(req, res) {
   const prisma = new PrismaClient();
-  if(req.method === "GET") {
 
+  if(req.method === "GET") {
+    let searchID = Number(req.query.searchIdState)
+    
+    const content = await prisma.Result.findMany({
+        where: {
+          searchID: {
+            equals: searchID
+          }
+        }
+    })
+
+    const title = await prisma.Search.findMany({
+      where: {
+        id: {
+          equals: searchID
+        }
+      }
+    })
+
+    content[0].title = title[0].searchTerm;
+
+    console.log('content = ');
+    console.log(content);
+    res.send(JSON.stringify({content: content}))
   }
 
   if(req.method === "POST") {
     const userInput = req.body.userInput
     const searchType = req.body.searchType
-    console.log(userInput);
+    //console.log(userInput);
     
     const search = await prisma.Search.create({
       data: {

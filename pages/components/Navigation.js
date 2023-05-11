@@ -5,19 +5,19 @@ export default function Navigation(props) {
   return (
     <nav className={styles.navbar}>
       <button
-        className={styles.articles + ' ' + styles.buttons}
+        className={styles.articles + ' ' + styles.buttons + ' ' + (props.searchType == 'articles' ? styles.searchtype:'')}
         onClick={() => props.onSearchTypeChange('articles')}
       >
         Articles
       </button>
       <button
-        className={styles.movies + ' ' + styles.buttons}
+        className={styles.movies + ' ' + styles.buttons + ' ' + (props.searchType == 'movies' ? styles.searchtype:'')}
         onClick={() => props.onSearchTypeChange('movies')}
       >
         Movies
       </button>
       <button
-        className={styles.books + ' ' + styles.buttons}
+        className={styles.books + ' ' + styles.buttons + ' ' + (props.searchType == 'books' ? styles.searchtype:'')}
         onClick={() => props.onSearchTypeChange('books')}
       >
         Books

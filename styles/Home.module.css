@@ -64,32 +64,21 @@
   justify-content: space-around;
 }
 
-.articles {
-  background-color: greenyellow;
-}
-
-.movies {
-  background-color: aquamarine;
-}
-
-.books {
-  background-color:lightskyblue;
-}
-
 .buttons {
   width: 33.33333%;
   font-size: 30px;
+  color: green;
 }
 
 .buttons:hover {
-  color: green;
+  color: black;
 }
 
 .searchbar {
   display: flex;
   width: 100%;
+  margin-top: 5px;
   margin-bottom: 30px;
-  border-bottom: 1px solid green;
 }
 
 .searchform {
@@ -108,4 +97,20 @@
   padding-right: 1em;
   background-color: green;
   color: white;
+}
+
+.searchtype {
+  color:black;
+}
+
+.articles {
+  background-color:lightgreen;
+}
+
+.movies {
+  background-color: aquamarine;
+}
+
+.books {
+  background-color:lightskyblue;
 }

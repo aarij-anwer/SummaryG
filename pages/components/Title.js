@@ -2,7 +2,7 @@ export default function Title(props) {
 
   return (
     <div>
-      <span>Movie Title:</span> {props.title}
+      <span>Title:</span> {props.title}
     </div>
   );
 }

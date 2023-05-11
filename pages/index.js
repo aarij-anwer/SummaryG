@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
@@ -18,7 +19,25 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({ results }) {
   //useState initialization
-  const [searchState, setSearchState] = useState("movies");
+  const [searchState, setSearchState] = useState("articles");
+  const [searchIdState, setSearchIdState] = useState(14);
+  const [title, setTitle] = useState();
+  const [summary, setSummary] = useState();
+  const [review, setReview] = useState();
+  const [oneWordReview, setOneWordReview] = useState();
+  const [similarContent, setSimilarContent] = useState();
+
+  //useEffect initialization
+  useEffect(() => {
+    axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
+    .then(res => {
+      setTitle(res.data.content[0].title);
+      setSummary(res.data.content[0].summary);
+      setReview(res.data.content[0].review);
+      setOneWordReview(res.data.content[0].oneWordReview);
+      setSimilarContent(res.data.content[0].similar);
+    })
+  }, [searchIdState]);
 
   return (
     <>
@@ -37,6 +56,7 @@ export default function Home({ results }) {
         <Header/>
         <Navigation 
           onSearchTypeChange={setSearchState}
+          searchType={searchState}
         />
         <Search
           searchType={searchState}
@@ -46,13 +66,13 @@ export default function Home({ results }) {
             <RecentSearches/>
           </div>
           <div className={styles.center}>
-            <Title/>
-            <Summary/>
-            <Review/>
+            <Title title={title}/>
+            <Summary summary={summary}/>
+            <Review review={review}/>
           </div>
           <div className={styles.rightside}>
-            <OneWordReview/>
-            <SimilarContent/>
+            <OneWordReview oneWordReview={oneWordReview}/>
+            <SimilarContent similarContent={similarContent}/>
           </div>
         </div>
       </main>
