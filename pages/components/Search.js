@@ -13,14 +13,15 @@ export default function Search(props) {
     e.preventDefault();
     const userInput = inputRef.current.value;
     const searchType = props.searchType;
-    axios.post('/api/searchAPI', { userInput, searchType })
-      .catch(function (error) {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
-      });
+    axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
+    // axios.post('/api/searchAPI', { userInput, searchType })
+    //   .catch(function (error) {
+    //     if (error.response) {
+    //       console.log(error.response.data);
+    //       console.log(error.response.status);
+    //       console.log(error.response.headers);
+    //     }
+    //   });
     clearInputRef();
   };
 

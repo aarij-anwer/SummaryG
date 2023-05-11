@@ -25,8 +25,8 @@ export default async function handler(req, res) {
 
     content[0].title = title[0].searchTerm;
 
-    console.log('content = ');
-    console.log(content);
+    // console.log('content = ');
+    // console.log(content);
     res.send(JSON.stringify({content: content}))
   }
 
