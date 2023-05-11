@@ -1,9 +1,11 @@
 const { Configuration, OpenAIApi } = require("openai");
+import { PrismaClient } from '@prisma/client';
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+const prisma = new PrismaClient();
 
 //call openai with a prompt and max_tokens (size)
 async function generateCompletions(prompt, max_tokens) {
@@ -19,13 +21,41 @@ async function generateCompletions(prompt, max_tokens) {
   return completion.data.choices[0].text;
 }
 
+
+async function addSearchToDB(type, searchTerm,) {
+  const search = await prisma.Search.create({
+    data: {
+      type,
+      searchTerm
+    },
+  });
+  return search;
+}
+
+async function addResultsToDB(searchID, summary, review, oneWordReview, similar){
+  const result = await prisma.Result.create({
+    data: {
+      searchID,
+      summary,
+      review,
+      oneWordReview,
+      similar
+    },
+  });
+  return result;
+}
+
 //handler for the openai.js
 export default async function handler(req, res) {
+
   const type = req.query.searchType;
   const nameOrURL = req.query.userInput;
+  const searchID = await addSearchToDB(type,nameOrURL);
 
   console.log("type", type);
   console.log("nameOrURL", nameOrURL);
+  console.log("searchID",searchID);
+
 
   if (!configuration.apiKey) {
     res.status(500).json({
@@ -53,6 +83,9 @@ export default async function handler(req, res) {
     console.log("Review", review);
     console.log("OneWord", oneword);
     console.log("Similar", similar);
+
+    const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
+
     res.status(200).json({ summary, review, oneword, similar });
   } catch (error) {
     if (error.response) {
