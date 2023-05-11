@@ -8,9 +8,9 @@ const openai = new OpenAIApi(configuration);
 async function generateCompletions(type, prompt) {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: "Summarize this article:\n\nhttps://www.espn.com/nba/story/_/id/37600153/knicks-push-heat-game-6-jalen-brunson-38-point-gem",
+    prompt: "Summarize this article:\n\nhttps://www.cbc.ca/news/politics/canada-new-passport-more-nature-fewer-history-1.6838308",
     temperature: 0.7,
-    max_tokens: 64,
+    max_tokens: 4000,
     top_p: 1.0,
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
