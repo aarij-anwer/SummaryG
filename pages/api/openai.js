@@ -38,16 +38,22 @@ export default async function handler(req, res) {
 
   try {
     //prompt for summary
-    let prompt = createSummaryPrompt(type, nameOrURL);
+    let prompt = createPrompt(type, nameOrURL);
     console.log("prompt", prompt);
 
-    const summary = await generateCompletions(prompt, 3000);
+    const summary = await generateCompletions(prompt.summary, 3000);
     //prompt for review
+    const review = await generateCompletions(prompt.review, 3000);
     //prompt for oneword
+    const oneword = await generateCompletions(prompt.oneword, 3000);
     //prompt for similar
+    const similar = await generateCompletions(prompt.similar, 3000);
 
     console.log("Summary", summary);
-    res.status(200).json({ summary });
+    console.log("Review", review);
+    console.log("OneWord", oneword);
+    console.log("Similar", similar);
+    res.status(200).json({ summary, review, oneword, similar });
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -71,23 +77,27 @@ export default async function handler(req, res) {
   - similar = similar article/movie/book
 */
 
-const createSummaryPrompt = (type, nameOrURL) => {
+const createPrompt = (type, nameOrURL) => {
   //singularize the type
-  const singularizedType = singularizeType(type);
-  let answer = "";
+  // const singularizedType = singularizeType(type);
+  let returnval = {};
 
-  if (singularizedType == 'article')
+  if (type == 'articles')
   {
-    answer = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
-  } else if (singularizedType == 'book') {
-    answer = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
+    returnval.summary = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
+    returnval.review = `Write three takeways in 100 words or less for following article: ${nameOrURL}`;
+    returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
+    returnval.similar = `Find and share the name and URL of an article related to the following: ${nameOrURL}`;
+  } else if (type == 'books') {
+    returnval.summary = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
+    returnval.review = `Write a review of the book '${nameOrURL}' in 100 words or less, with at least one positive and one negative.`;
+    returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
+    returnval.similar = `Find and share the name of a book similar to: ${nameOrURL}`;
   } else {
-    answer = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
+    returnval.summary = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
+    returnval.review = `Write a review of the movie '${nameOrURL}' in 100 words or less, with at least one positive and one negative.`;
+    returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
+    returnval.similar = `Find and share the name of a movie similar to: ${nameOrURL}`;
   }
-
-  return answer;
-};
-
-const singularizeType = (type) => {
-  return type.substring(0,type.length-1);
+  return returnval;
 };
