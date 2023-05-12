@@ -27,7 +27,7 @@ export default function Home({ results }) {
   const [oneWordReview, setOneWordReview] = useState();
   const [similarContent, setSimilarContent] = useState();
   const [recentSearches, setRecentSearches] = useState();
-  
+
 
   //useEffect initialization
   useEffect(() => {
@@ -90,10 +90,10 @@ export default function Home({ results }) {
           searchType={searchState}
           onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
         />
-        <div className={styles.content}>
-          <div className={styles.leftside}>
-            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
-          </div>
+        <div className={styles.leftside}>
+          <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
+        </div>
+        <div className={styles.content + ' ' + (!searchIdState ? styles.hidden : '')}>
           <div className={styles.center}>
             <Title title={title} />
             <Summary summary={summary} />

@@ -114,3 +114,7 @@
 .books {
   background-color:lightskyblue;
 }
+
+.hidden {
+  display: none;
+}

@@ -2,12 +2,12 @@
 import { PrismaClient } from '@prisma/client';
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
-
+  
   if (req.method === "GET") {
     let searchID = Number(req.query.searchIdState)
-
+    
     if (searchID) {
+      const prisma = new PrismaClient();
       const content = await prisma.Result.findMany({
         where: {
           searchID: {
@@ -29,30 +29,31 @@ export default async function handler(req, res) {
       // console.log('content = ');
       // console.log(content);
       res.send(JSON.stringify({ content: content }))
+    } else {
+      // console.log("here");
+      res.send({ name: 'John Doe' });
     }
-  } else {
-    res.status(200);
   }
 
-  if (req.method === "POST") {
-    const userInput = req.body.userInput
-    const searchType = req.body.searchType
-    //console.log(userInput);
+  // if (req.method === "POST") {
+  //   const userInput = req.body.userInput
+  //   const searchType = req.body.searchType
+  //   //console.log(userInput);
 
-    const search = await prisma.Search.create({
-      data: {
-        type: searchType,
-        searchTerm: userInput,
-      },
-    })
+  //   const search = await prisma.Search.create({
+  //     data: {
+  //       type: searchType,
+  //       searchTerm: userInput,
+  //     },
+  //   })
 
-    //generate chatGPT requests here and add responses to database
+  //   //generate chatGPT requests here and add responses to database
 
-  }
+  // }
 
-  if (req.method === "DELETE") {
+  // if (req.method === "DELETE") {
 
-  }
-  // res.status(200).json({ name: 'John Doe' })
+  // }
+  // // res.status(200).json({ name: 'John Doe' })
 
 }
