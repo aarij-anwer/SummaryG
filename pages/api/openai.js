@@ -136,12 +136,12 @@ const createPrompt = (type, nameOrURL) => {
     returnval.similar = `Find and share the name and URL of an article related to the following: ${nameOrURL}`;
   } else if (type == 'books') {
     returnval.summary = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
-    returnval.review = `Write a review of the book '${nameOrURL}' in 100 words or less, with at least one positive and one negative.`;
+    returnval.review = `In 100 words or less, what is one positive and one negative of the book '${nameOrURL}'.`;
     returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
     returnval.similar = `Find and share the name of a book similar to: ${nameOrURL}`;
   } else {
     returnval.summary = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
-    returnval.review = `Write a review of the movie '${nameOrURL}' in 100 words or less, with at least one positive and one negative.`;
+    returnval.review = `In 100 words or less, what is one positive and one negative of the movie '${nameOrURL}'.`;
     returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
     returnval.similar = `Find and share the name of a movie similar to: ${nameOrURL}`;
   }

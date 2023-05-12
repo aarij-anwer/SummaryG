@@ -11,6 +11,8 @@ export default function Search(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    props.setGuruCognating(true);
+    console.log(`Guru says ${props.guruSays}`);
     const userInput = inputRef.current.value;
     const searchType = props.searchType;
     const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
@@ -27,6 +29,8 @@ export default function Search(props) {
     //     }
     //   });
     clearInputRef();
+    props.setGuruCognating(false);
+    console.log(`Guru says ${props.guruSays}`);
   };
 
 
@@ -42,7 +46,7 @@ export default function Search(props) {
           name="searchTerm"
           type="text"
           ref={inputRef}
-          placeholder="Enter URL or search term"
+          placeholder={props.searchType == "articles" ? "Enter article URL" : `Enter ${props.searchType.slice(0, -1)} title`}
         />
       </form>
       <button className={styles.searchbutton} onClick={handleSubmit}>Search</button>
