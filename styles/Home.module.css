@@ -143,6 +143,7 @@
 }
 
 .rotate {
+  max-width: 50%;
   animation: rotation 5s infinite linear;
 }
 
