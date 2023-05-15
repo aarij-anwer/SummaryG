@@ -54,7 +54,7 @@
 
 .title {
   font-family: 'Bruno Ace SC', cursive;
-  font-size: 100px;
+  font-size: 5vmax;
   font-weight: bold;
   color: green;
 }
@@ -113,6 +113,27 @@
 
 .books {
   background-color:lightskyblue;
+}
+
+.loading {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.loadingmessage {
+  font-family: 'Bruno Ace SC', cursive;
+  font-size: 7vmax;
+  font-weight: bold;
+  color:lightseagreen;
+}
+
+.loadingimage {
+  max-width: 50%;
 }
 
 .hidden {

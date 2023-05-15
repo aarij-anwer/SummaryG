@@ -14,6 +14,7 @@ import Summary from './components/Summary'
 import Review from './components/Review'
 import OneWordReview from './components/OneWordReview'
 import SimilarContent from './components/SimilarContent'
+import Loading from './components/Loading';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,7 @@ export default function Home({ results }) {
   const [oneWordReview, setOneWordReview] = useState();
   const [similarContent, setSimilarContent] = useState();
   const [recentSearches, setRecentSearches] = useState();
+  const [guruCognating, setGuruCognating] = useState(false);
 
 
   //useEffect initialization
@@ -81,7 +83,10 @@ export default function Home({ results }) {
 
       </Head>
       <main className={styles.main}>
-        <Header />
+        <Loading
+          guruCognating={guruCognating}
+        />
+        <Header/>
         <Navigation
           onSearchTypeChange={setSearchState}
           searchType={searchState}
@@ -89,17 +94,18 @@ export default function Home({ results }) {
         <Search
           searchType={searchState}
           onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
+          setGuruCognating={setGuruCognating}
         />
-        <div className={styles.leftside}>
-          <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
-        </div>
-        <div className={styles.content + ' ' + (!searchIdState ? styles.hidden : '')}>
-          <div className={styles.center}>
+        <div className={styles.content}>
+          <div className={styles.leftside}>
+            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
+          </div>
+          <div className={styles.center + ' ' + (!searchIdState ? styles.hidden : '')}>
             <Title title={title} />
             <Summary summary={summary} />
             <Review review={review} />
           </div>
-          <div className={styles.rightside}>
+          <div className={styles.rightside + ' ' + (!searchIdState ? styles.hidden : '')}>
             <OneWordReview oneWordReview={oneWordReview} />
             <SimilarContent similarContent={similarContent} />
           </div>
