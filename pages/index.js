@@ -15,6 +15,7 @@ import Review from './components/Review'
 import OneWordReview from './components/OneWordReview'
 import SimilarContent from './components/SimilarContent'
 import Loading from './components/Loading';
+import InitialLoad from './components/InitialLoad';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -95,6 +96,9 @@ export default function Home({ results }) {
           searchType={searchState}
           onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
           setGuruCognating={setGuruCognating}
+        />
+        <InitialLoad 
+          searchIdState={searchIdState}
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
