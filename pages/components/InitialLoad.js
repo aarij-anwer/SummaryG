@@ -1,12 +1,9 @@
-import styles from '@/styles/Home.module.css'
-
 export default function InitialLoad(props) {
-
   return (
-    <div className={styles.initialload  + ' ' + (props.searchIdState ? styles.hidden : '')}>
-      <img className={styles.initialimage} src='/robot.png'/>
+    <div className={`flex justify-evenly items-center w-full h-full ${props.searchIdState ? 'hidden' : ''}`}>
+      <img className="w-1/12" src='/robot.png' />
       <div>
-        <span className={styles.initialmessage}>Search for an Article, Movie, or Book to get a summary, review, quote and similar content!</span>
+        <span className="text-3xl text-black">Search for an Article, Movie, or Book to get a summary, review, quote and similar content!</span>
       </div>
     </div>
   );
