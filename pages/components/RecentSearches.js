@@ -4,7 +4,7 @@ export default function RecentSearches(props) {
   };
 
   return (
-    <div className="sidebar top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900">
+    <div className="sidebar top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 hidden">
       <div class="text-gray-100 text-xl">
         <div class="p-2.5 mt-1 flex items-center">
           <i class="bi bi-app-indicator px-2 py-1 rounded-md bg-blue-600"></i>
