@@ -26,7 +26,7 @@ export default function Navigation(props) {
       >
         <div className="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-700 ${props.searchType === 'articles' ? 'bg-gray-700' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-400 ${props.searchType === 'articles' ? 'bg-gray-500' : ''
               }`}
             onClick={() => props.onSearchTypeChange('articles')}
           >
@@ -34,7 +34,7 @@ export default function Navigation(props) {
           </button>
           <div className="mt-2 lg:mt-0 lg:w-1"></div> {/* Add a small distance */}
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-cyan-700 ${props.searchType === 'movies' ? 'bg-cyan-700' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-cyan-400 ${props.searchType === 'movies' ? 'bg-cyan-500' : ''
               }`}
             onClick={() => props.onSearchTypeChange('movies')}
           >
@@ -42,7 +42,7 @@ export default function Navigation(props) {
           </button>
           <div className="mt-2 lg:mt-0 lg:w-1"></div> {/* Add a small distance */}
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-emerald-400 ${props.searchType === 'books' ? 'bg-emerald-400' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-emerald-400 ${props.searchType === 'books' ? 'bg-emerald-500' : ''
               }`}
             onClick={() => props.onSearchTypeChange('books')}
           >

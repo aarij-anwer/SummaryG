@@ -34,13 +34,13 @@ export default function Search(props) {
   const getSearchBarColor = () => {
     switch (props.searchType) {
       case "articles":
-        return "bg-gray-700 dark:bg-gray-700";
+        return "bg-gray-300 dark:bg-gray-700";
       case "movies":
-        return "bg-cyan-700 dark:bg-cyan-700";
+        return "bg-cyan-200 dark:bg-cyan-700";
       case "books":
-        return "bg-emerald-400 dark:bg-emerald-400";
+        return "bg-emerald-200 dark:bg-emerald-400";
       default:
-        return "bg-gray-700 dark:bg-gray-700";
+        return "bg-gray-300 dark:bg-gray-700";
     }
   };
 
@@ -54,13 +54,13 @@ export default function Search(props) {
         </div>
         <input
           id="default-search"
-          className={`block w-full p-4 pl-10 text-sm text-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${getSearchBarColor()}`}
+          className={`block w-full p-4 pl-10 text-sm text-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${getSearchBarColor()}`}
           type="search"
           ref={inputRef}
           placeholder={props.searchType === "articles" ? "Enter article URL" : `Enter ${props.searchType.slice(0, -1)} title`}
           required
         />
-        <button type="submit" className="text-white absolute right-2.5 top-.5 bottom-1.5 bg-transparent hover:bg-amber-500 text-gray-200 font-semibold hover:text-white py-2 px-4 border border-gray-200 hover:border-transparent rounded text-sm">
+        <button type="submit" className="text-gray-500 dark:text-gray-200 absolute right-2.5 top-.5 bottom-1.5 bg-transparent hover:bg-amber-500 font-semibold hover:text-white py-2 px-4 border border-gray-400 dark:border-gray-200 hover:border-transparent rounded text-sm">
           Search
         </button>
       </div>
