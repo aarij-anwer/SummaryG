@@ -102,14 +102,21 @@ export default function Home({ results }) {
           <InitialLoad
             searchIdState={searchIdState}
           />
-          <div className="flex h-screen bg-gray-200">
+          <Title
+            searchIdState={searchIdState}
+            title={title} 
+          />
+          <div className={"flex h-screen bg-gray-200 " + (!searchIdState ? 'hidden' : '')}>
             <div className={"flex-1 p-4 " + (!searchIdState ? 'hidden' : '')}>
-              <Title title={title} />
+              <br/>
               <Summary summary={summary} />
+              <br/>
               <Review review={review} />
             </div>
-            <div className={styles.rightside + ' ' + (!searchIdState ? styles.hidden : '')}>
+            <div className={"flex-1 p-4 " + (!searchIdState ? 'hidden' : '')}>
+              <br/>
               <OneWordReview oneWordReview={oneWordReview} />
+              <br/>
               <SimilarContent similarContent={similarContent} />
             </div>
           </div>
