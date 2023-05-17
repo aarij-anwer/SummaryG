@@ -1,4 +1,4 @@
-import { useState } from 'react';;
+import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
 export default function Navigation(props) {
@@ -22,26 +22,27 @@ export default function Navigation(props) {
         <FiMenu className="h-6 w-6" />
       </button>
       <div
-        className={`${isOpen ? "" : "hidden"
-          } top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto`}
+        className={`${isOpen ? '' : 'hidden'} top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto`}
       >
         <div className="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-900 ${props.searchType === 'articles' ? 'bg-gray-900' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-700 ${props.searchType === 'articles' ? 'bg-gray-700' : ''
               }`}
             onClick={() => props.onSearchTypeChange('articles')}
           >
             <span>Articles</span>
           </button>
+          <div className="mt-2 lg:mt-0 lg:w-1"></div> {/* Add a small distance */}
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-900 ${props.searchType === 'movies' ? 'bg-gray-900' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-cyan-700 ${props.searchType === 'movies' ? 'bg-cyan-700' : ''
               }`}
             onClick={() => props.onSearchTypeChange('movies')}
           >
             <span>Movies</span>
           </button>
+          <div className="mt-2 lg:mt-0 lg:w-1"></div> {/* Add a small distance */}
           <button
-            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-gray-900 ${props.searchType === 'books' ? 'bg-gray-900' : ''
+            className={`lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-white items-center justify-center hover:bg-emerald-400 ${props.searchType === 'books' ? 'bg-emerald-400' : ''
               }`}
             onClick={() => props.onSearchTypeChange('books')}
           >
