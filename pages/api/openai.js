@@ -55,11 +55,13 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
 
 // Function to extract text after "\n\n"
 function extractTextAfterNewline(text) {
-  const splitText = text.split("\n\n");
-  if (splitText.length >= 2) {
-    return splitText[1];
-  }
-  return "";
+  // const splitText = text.split("\n\n");
+  // if (splitText.length >= 2) {
+  //   return splitText[1];
+  // }
+  // return "";
+  const index = text.indexOf('\n\n');
+  return text.substring(index+2);
 }
 
 //handler for the openai.js
@@ -91,10 +93,12 @@ export default async function handler(req, res) {
 
     //prompt for summary
     const summaryResponse = await generateCompletions(prompt.summary, 3000);
+    console.log(summaryResponse);
     const summary = extractTextAfterNewline(summaryResponse);
 
     //prompt for review
     const reviewResponse = await generateCompletions(prompt.review, 3000);
+    console.log(reviewResponse);
     const review = extractTextAfterNewline(reviewResponse);
 
     //prompt for oneword
@@ -102,19 +106,22 @@ export default async function handler(req, res) {
     const oneword = extractTextAfterNewline(onewordResponse);
 
     //prompt for similar
-    const similarResponse = await generateCompletions(prompt.similar, 3000);
-    const similar = extractTextAfterNewline(similarResponse);
-
+    let similar;
+    
     //prompt for a title if a URL
     if (type == 'articles') {
       nameOrURL = await generateCompletions(prompt.title, 3000);
+      similar = `https://www.google.com/search?q=${nameOrURL.substring(2)}`;
+    } else {
+      const similarResponse = await generateCompletions(prompt.similar, 3000);
+      similar = extractTextAfterNewline(similarResponse);
     }
 
     const searchID = await addSearchToDB(type, nameOrURL, sessionID);
     const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
 
     console.log("searchID", searchID);
-    console.log("resultID", resultID);
+    // console.log("resultID", resultID);
 
     res.status(200).json({ summary, review, oneword, similar, sID, rID });
   } catch (error) {
