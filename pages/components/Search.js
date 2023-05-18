@@ -11,26 +11,25 @@ export default function Search(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    props.setGuruCognating(true);
-    console.log(`Guru says ${props.guruSays}`);
-    const userInput = inputRef.current.value;
-    const searchType = props.searchType;
-    const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
-    props.onSubmit(result.data.sID);
+    if (inputRef.current.value) {
+      props.setGuruCognating(true);
+      console.log(`Guru says ${props.guruSays}`);
+      const userInput = inputRef.current.value;
+      const searchType = props.searchType;
+      const sessionID = props.sessionID;
 
-    console.log("result", result);
+      //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
+      const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
 
-    // axios.post('/api/searchAPI', { userInput, searchType })
-    //   .catch(function (error) {
-    //     if (error.response) {
-    //       console.log(error.response.data);
-    //       console.log(error.response.status);
-    //       console.log(error.response.headers);
-    //     }
-    //   });
-    clearInputRef();
-    props.setGuruCognating(false);
-    console.log(`Guru says ${props.guruSays}`);
+      //update searchIdState, causing index.js to re-render
+      props.onSubmit(result.data.sID);
+
+      console.log("result", result);
+
+      clearInputRef();
+      props.setGuruCognating(false);
+      console.log(`Guru says ${props.guruSays}`);
+    }
   };
 
 
