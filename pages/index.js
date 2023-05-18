@@ -109,6 +109,7 @@ export default function Home() {
             searchType={searchState}
             onSubmit={setSearchIdState}
             setGuruCognating={setGuruCognating}
+            sessionID={sessionID} //sessionID will get passed with the API call
           />
           <InitialLoad
             searchIdState={searchIdState}
