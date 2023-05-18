@@ -17,7 +17,11 @@ export default function Search(props) {
       const userInput = inputRef.current.value;
       const searchType = props.searchType;
       const sessionID = props.sessionID;
+
+      //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
       const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
+
+      //update searchIdState, causing index.js to re-render
       props.onSubmit(result.data.sID);
 
       console.log("result", result);

@@ -56,9 +56,13 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
 //handler for the openai.js
 export default async function handler(req, res) {
 
-  const type = req.query.searchType;
+  let type = req.query.searchType;
   let nameOrURL = req.query.userInput;
   const sessionID = req.query.sessionID;
+
+  if (checkURL(nameOrURL)) {
+    type = 'articles';
+  }
 
   // console.log("type", type);
   // console.log("nameOrURL", nameOrURL);
@@ -141,4 +145,13 @@ const createPrompt = (type, nameOrURL) => {
     returnval.similar = `Recommend only the name and year of release of one movie similar to: ${nameOrURL}`;
   }
   return returnval;
+};
+
+const checkURL = (variable) => {
+  let answer = false;
+  if (variable.startsWith('http://') || variable.startsWith('https://') || variable.startsWith('www.') || variable.startsWith('http://www.') || variable.startsWith('https://www.')) {
+    answer = true;
+  } 
+
+  return answer;
 };

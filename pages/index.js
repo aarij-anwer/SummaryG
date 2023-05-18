@@ -33,6 +33,7 @@ export default function Home() {
   const [guruCognating, setGuruCognating] = useState(false);
   const [sessionID, setSessionID] = useState();
  
+  //client side sessionID
   useEffect(() => {
     const generatedSessionId = uuidv4();
     sessionStorage.setItem('sessionId', generatedSessionId);
@@ -66,6 +67,7 @@ export default function Home() {
   }, [searchIdState]);
 
   //useEffect initialization for recent searches
+  //pass sessionID to only display by sessionID
   useEffect(() => {
     axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
       .then(res => {
@@ -103,7 +105,7 @@ export default function Home() {
           searchType={searchState}
           onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
           setGuruCognating={setGuruCognating}
-          sessionID={sessionID}
+          sessionID={sessionID} //sessionID will get passed with the API call
         />
         <InitialLoad 
           searchIdState={searchIdState}
