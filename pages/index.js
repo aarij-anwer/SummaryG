@@ -103,7 +103,6 @@ export default function Home({ results }) {
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
-            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
           </div>
           <div className={styles.center + ' ' + (!searchIdState ? styles.hidden : '')}>
             <Title title={title} />
