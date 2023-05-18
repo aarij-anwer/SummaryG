@@ -12,8 +12,6 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
 export default function TemporaryDrawer(props) {
-
-  console.log("TemporaryDrawer Props", props);
   const anchor = "bottom";
   let items;
 
@@ -39,9 +37,7 @@ export default function TemporaryDrawer(props) {
   };
 
   const handleItemClick = (searchId) => {
-    // Perform any desired actions when an item is clicked
     console.log('Item clicked:', searchId);
-    // Example: Update the state with the clicked searchId
     props.setSearchIdState(searchId);
   };
 
