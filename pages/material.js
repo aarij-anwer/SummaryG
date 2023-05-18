@@ -37,7 +37,7 @@ export default function TemporaryDrawer(props) {
   };
 
   const handleItemClick = (searchId) => {
-    console.log('Item clicked:', searchId);
+    console.log('Item clicked: ', searchId);
     props.setSearchIdState(searchId);
   };
 
