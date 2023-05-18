@@ -14,12 +14,15 @@ import MailIcon from '@mui/icons-material/Mail';
 export default function TemporaryDrawer(props) {
 
   console.log("TemporaryDrawer Props", props);
-  const items = ['Inbox', 'Starred', 'Send email', 'Drafts'];
-  let items2;
+  const anchor = "bottom";
+  let items;
 
   if (props && props.recentSearches) {
-    items2 = props.recentSearches.map((item) => {
-      return item.searchTerm;
+    items = props.recentSearches.map((item) => {
+      return {
+        searchTerm: item.searchTerm,
+        id: item.id
+      }
     });
   }
 
@@ -35,7 +38,7 @@ export default function TemporaryDrawer(props) {
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor, items) => (
+  const list = (anchor, items, onClick) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role="presentation"
@@ -44,9 +47,9 @@ export default function TemporaryDrawer(props) {
     >
       <List>
         {items.map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton>
-              <ListItemText primary={text} />
+              <ListItemText primary={text.searchTerm} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -56,18 +59,16 @@ export default function TemporaryDrawer(props) {
 
   return (
     <div>
-      {['bottom'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{props.name}</Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {items2 && list(anchor, items2)}
-          </Drawer>
-        </React.Fragment>
-      ))}
+      <React.Fragment key={anchor}>
+        <Button onClick={toggleDrawer(anchor, true)}>{props.name}</Button>
+        <Drawer
+          anchor={anchor}
+          open={state[anchor]}
+          onClose={toggleDrawer(anchor, false)}
+        >
+          {items && list(anchor, items, props.setSearchIdState)}
+        </Drawer>
+      </React.Fragment>
     </div>
   );
 }
