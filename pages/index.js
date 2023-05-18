@@ -17,6 +17,8 @@ import SimilarContent from './components/SimilarContent'
 import Loading from './components/Loading';
 import InitialLoad from './components/InitialLoad';
 import { v4 as uuidv4 } from 'uuid';
+import Material from './material';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -112,7 +114,6 @@ export default function Home() {
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
-            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
           </div>
           <div className={styles.center + ' ' + (!searchIdState ? styles.hidden : '')}>
             <Title title={title} />
@@ -124,6 +125,7 @@ export default function Home() {
             <SimilarContent similarContent={similarContent} />
           </div>
         </div>
+        <Material name="Recent Searches" recentSearches={recentSearches} setSearchIdState={setSearchIdState}/>
       </main>
     </>
   )
