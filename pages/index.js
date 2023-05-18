@@ -16,6 +16,7 @@ import OneWordReview from './components/OneWordReview'
 import SimilarContent from './components/SimilarContent'
 import Loading from './components/Loading';
 import InitialLoad from './components/InitialLoad';
+import Material from './material';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -102,7 +103,6 @@ export default function Home({ results }) {
         />
         <div className={styles.content}>
           <div className={styles.leftside}>
-            <RecentSearches searches={recentSearches} onSearchSelect={setSearchIdState} />
           </div>
           <div className={styles.center + ' ' + (!searchIdState ? styles.hidden : '')}>
             <Title title={title} />
@@ -114,6 +114,7 @@ export default function Home({ results }) {
             <SimilarContent similarContent={similarContent} />
           </div>
         </div>
+        <Material name="Recent Searches" recentSearches={recentSearches} setSearchIdState={setSearchIdState}/>
       </main>
     </>
   )
