@@ -9,14 +9,17 @@ export default async function handler(req, res) {
     console.log("sessionID in recentSearchAPI", sessionID);
 
     const recentSearches = await prisma.Search.findMany({
+      where: {
+        sessionID: sessionID 
+      },
       orderBy: {
         id: 'desc'
       },
       take: 10
     })
 
-    // console.log('recentSearches = ');
-    // console.log(recentSearches);
+    console.log('recentSearches = ');
+    console.log(recentSearches);
     res.send(JSON.stringify({ recentSearches: recentSearches }))
   }
 

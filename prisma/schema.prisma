@@ -24,6 +24,6 @@ model Search {
   id         Int     @id @default(autoincrement())
   type       String
   searchTerm String
-  sessionID  String
+  sessionID  String?
   Result     Result?
 }
