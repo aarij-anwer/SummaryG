@@ -15,6 +15,13 @@ export default function TemporaryDrawer(props) {
 
   console.log("TemporaryDrawer Props", props);
   const items = ['Inbox', 'Starred', 'Send email', 'Drafts'];
+  let items2;
+
+  if (props && props.recentSearches) {
+    items2 = props.recentSearches.map((item) => {
+      return item.searchTerm;
+    });
+  }
 
   const [state, setState] = React.useState({
     bottom: false
@@ -39,9 +46,6 @@ export default function TemporaryDrawer(props) {
         {items.map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
-              {/* <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon> */}
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
@@ -60,7 +64,7 @@ export default function TemporaryDrawer(props) {
             open={state[anchor]}
             onClose={toggleDrawer(anchor, false)}
           >
-            {list(anchor, items)}
+            {items2 && list(anchor, items2)}
           </Drawer>
         </React.Fragment>
       ))}
