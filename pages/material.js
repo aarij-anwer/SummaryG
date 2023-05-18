@@ -38,6 +38,13 @@ export default function TemporaryDrawer(props) {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleItemClick = (searchId) => {
+    // Perform any desired actions when an item is clicked
+    console.log('Item clicked:', searchId);
+    // Example: Update the state with the clicked searchId
+    props.setSearchIdState(searchId);
+  };
+
   const list = (anchor, items, onClick) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
@@ -48,7 +55,7 @@ export default function TemporaryDrawer(props) {
       <List>
         {items.map((text, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
+          <ListItemButton onClick={() => handleItemClick(text.id)}>
               <ListItemText primary={text.searchTerm} />
             </ListItemButton>
           </ListItem>
