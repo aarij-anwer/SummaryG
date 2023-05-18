@@ -109,6 +109,7 @@ export default function Home() {
             searchType={searchState}
             onSubmit={setSearchIdState}
             setGuruCognating={setGuruCognating}
+            sessionID={sessionID} //sessionID will get passed with the API call
           />
           <InitialLoad
             searchIdState={searchIdState}
@@ -130,6 +131,7 @@ export default function Home() {
               <SimilarContent similarContent={similarContent} />
             </div>
           </div>
+          <Material name="Recent Searches" recentSearches={recentSearches} setSearchIdState={setSearchIdState}/>
         </main>
       </div>
     </>
