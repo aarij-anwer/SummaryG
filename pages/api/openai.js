@@ -111,7 +111,6 @@ export default async function handler(req, res) {
   }
 }
 
-
 /*
   - summary = 50 word executive summary
   - review = three takeways (article) in 100 words, write a review of the movie in 100 words with one positive and one negative
