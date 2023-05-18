@@ -67,14 +67,14 @@ export default function Home() {
 
   //useEffect initialization for recent searches
   useEffect(() => {
-    axios.get('api/recentSearchAPI')
+    axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
       .then(res => {
         setRecentSearches(res.data.recentSearches);
       })
       .catch(error => {
         console.error('Fetching data failed: ', error);
       });
-  }, [searchIdState]);
+  }, [searchIdState, sessionID]);
 
 
   return (

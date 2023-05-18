@@ -5,7 +5,8 @@ export default async function handler(req, res) {
   const prisma = new PrismaClient();
 
   if (req.method === "GET") {
-    let searchID = Number(req.query.searchIdState)
+    let sessionID = req.query.sessionID;
+    console.log("sessionID in recentSearchAPI", sessionID);
 
     const recentSearches = await prisma.Search.findMany({
       orderBy: {
@@ -14,8 +15,8 @@ export default async function handler(req, res) {
       take: 10
     })
 
-    console.log('recentSearches = ');
-    console.log(recentSearches);
+    // console.log('recentSearches = ');
+    // console.log(recentSearches);
     res.send(JSON.stringify({ recentSearches: recentSearches }))
   }
 
