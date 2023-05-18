@@ -131,6 +131,7 @@ export default function Home() {
               <SimilarContent similarContent={similarContent} />
             </div>
           </div>
+          <Material name="Recent Searches" recentSearches={recentSearches} setSearchIdState={setSearchIdState}/>
         </main>
       </div>
     </>
