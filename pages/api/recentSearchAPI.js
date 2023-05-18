@@ -5,9 +5,13 @@ export default async function handler(req, res) {
   const prisma = new PrismaClient();
 
   if (req.method === "GET") {
-    let searchID = Number(req.query.searchIdState)
+    let sessionID = req.query.sessionID;
+    console.log("sessionID in recentSearchAPI", sessionID);
 
     const recentSearches = await prisma.Search.findMany({
+      where: {
+        sessionID: sessionID 
+      },
       orderBy: {
         id: 'desc'
       },

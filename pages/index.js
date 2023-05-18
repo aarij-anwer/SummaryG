@@ -16,11 +16,13 @@ import OneWordReview from './components/OneWordReview'
 import SimilarContent from './components/SimilarContent'
 import Loading from './components/Loading';
 import InitialLoad from './components/InitialLoad';
+import { v4 as uuidv4 } from 'uuid';
 import Material from './material';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({ results }) {
+export default function Home() {
   //useState initialization
   const [searchState, setSearchState] = useState("articles");
   const [searchIdState, setSearchIdState] = useState();
@@ -31,7 +33,14 @@ export default function Home({ results }) {
   const [similarContent, setSimilarContent] = useState();
   const [recentSearches, setRecentSearches] = useState();
   const [guruCognating, setGuruCognating] = useState(false);
-
+  const [sessionID, setSessionID] = useState();
+ 
+  //client side sessionID
+  useEffect(() => {
+    const generatedSessionId = uuidv4();
+    sessionStorage.setItem('sessionId', generatedSessionId);
+    setSessionID(generatedSessionId);
+  }, []);
 
   //useEffect initialization
   useEffect(() => {
@@ -60,15 +69,16 @@ export default function Home({ results }) {
   }, [searchIdState]);
 
   //useEffect initialization for recent searches
+  //pass sessionID to only display by sessionID
   useEffect(() => {
-    axios.get('api/recentSearchAPI')
+    axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
       .then(res => {
         setRecentSearches(res.data.recentSearches);
       })
       .catch(error => {
         console.error('Fetching data failed: ', error);
       });
-  }, [searchIdState]);
+  }, [searchIdState, sessionID]);
 
 
   return (
@@ -97,6 +107,7 @@ export default function Home({ results }) {
           searchType={searchState}
           onSubmit={setSearchIdState} // setSearchIDState will handle the submitted data
           setGuruCognating={setGuruCognating}
+          sessionID={sessionID} //sessionID will get passed with the API call
         />
         <InitialLoad 
           searchIdState={searchIdState}
