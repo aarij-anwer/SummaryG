@@ -61,7 +61,7 @@ export default function Material(props) {
   );
 
   return (
-    <div>
+    <div className={"fixed left-[43.5%] bottom-0"}>
       <React.Fragment key={anchor}>
         <Button onClick={toggleDrawer(anchor, true)}>{props.name}</Button>
         <Drawer

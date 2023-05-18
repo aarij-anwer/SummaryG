@@ -119,13 +119,14 @@ export default function Home() {
             title={title} 
           />
           <div className={"flex h-screen bg-gray-200 " + (!searchIdState ? 'hidden' : '')}>
-            <div className={"flex-1 p-4 " + (!searchIdState ? 'hidden' : '')}>
+            <div className={"flex-1 p-4 "}>
               <br/>
               <Summary summary={summary} />
               <br/>
               <Review review={review} />
             </div>
-            <div className={"relative overflow-x-auto shadow-md min-w-[200px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>              <br/>
+            <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>
+              <br/>
               <OneWordReview oneWordReview={oneWordReview} />
               <br/>
               <SimilarContent similarContent={similarContent} />
