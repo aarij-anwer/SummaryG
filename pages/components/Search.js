@@ -16,7 +16,8 @@ export default function Search(props) {
       console.log(`Guru says ${props.guruSays}`);
       const userInput = inputRef.current.value;
       const searchType = props.searchType;
-      const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}`);
+      const sessionID = props.sessionID;
+      const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
       props.onSubmit(result.data.sID);
 
       console.log("result", result);

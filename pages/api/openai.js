@@ -24,17 +24,19 @@ async function generateCompletions(prompt, max_tokens) {
 }
 
 
-async function addSearchToDB(type, searchTerm,) {
+async function addSearchToDB(type, searchTerm, sessionID) {
+  // console.log("searchTerm", searchTerm);
   const search = await prisma.Search.create({
     data: {
       type,
-      searchTerm
+      searchTerm,
+      sessionID
     },
   });
   return search;
 }
 
-async function addResultsToDB(searchID, summary, review, oneWordReview, similar){
+async function addResultsToDB(searchID, summary, review, oneWordReview, similar) {
   const result = await prisma.Result.create({
     data: {
       searchID,
@@ -51,21 +53,15 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
   return result;
 }
 
-// async function getIDs(resultID) {
-
-// }
-
 //handler for the openai.js
 export default async function handler(req, res) {
 
   const type = req.query.searchType;
-  const nameOrURL = req.query.userInput;
-  const searchID = await addSearchToDB(type,nameOrURL);
+  let nameOrURL = req.query.userInput;
+  const sessionID = req.query.sessionID;
 
-  console.log("type", type);
-  console.log("nameOrURL", nameOrURL);
-  console.log("searchID",searchID);
-
+  // console.log("type", type);
+  // console.log("nameOrURL", nameOrURL);
 
   if (!configuration.apiKey) {
     res.status(500).json({
@@ -77,10 +73,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    //prompt for summary
     let prompt = createPrompt(type, nameOrURL);
     console.log("prompt", prompt);
 
+    //prompt for summary
     const summary = await generateCompletions(prompt.summary, 3000);
     //prompt for review
     const review = await generateCompletions(prompt.review, 3000);
@@ -88,16 +84,16 @@ export default async function handler(req, res) {
     const oneword = await generateCompletions(prompt.oneword, 3000);
     //prompt for similar
     const similar = await generateCompletions(prompt.similar, 3000);
+    //prompt for a title if a URL
+    if (type == 'articles') {
+      nameOrURL = await generateCompletions(prompt.title, 3000);
+    }
 
-    console.log("Summary", summary);
-    console.log("Review", review);
-    console.log("OneWord", oneword);
-    console.log("Similar", similar);
-    
+    const searchID = await addSearchToDB(type, nameOrURL, sessionID);
     const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
-    console.log("resultID", resultID);
-    
-    // const ids = await getIDs(resultID);
+
+    console.log("searchID", searchID);
+    // console.log("resultID", resultID);
 
     res.status(200).json({ summary, review, oneword, similar, sID, rID });
   } catch (error) {
@@ -128,22 +124,22 @@ const createPrompt = (type, nameOrURL) => {
   // const singularizedType = singularizeType(type);
   let returnval = {};
 
-  if (type == 'articles')
-  {
+  if (type == 'articles') {
     returnval.summary = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
     returnval.review = `Write three takeways in 100 words or less for following article: ${nameOrURL}`;
     returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
-    returnval.similar = `Find and share the name and URL of an article related to the following: ${nameOrURL}`;
+    returnval.similar = `Recommend only the name and URL for an article that is similar to the following article: ${nameOrURL}`;
+    returnval.title = `What is the title or heading of the following article: ${nameOrURL}`;
   } else if (type == 'books') {
     returnval.summary = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
     returnval.review = `In 100 words or less, what is one positive and one negative of the book '${nameOrURL}'.`;
     returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
-    returnval.similar = `Find and share the name of a book similar to: ${nameOrURL}`;
+    returnval.similar = `Recommend only the name of one book similar to: ${nameOrURL}`;
   } else {
     returnval.summary = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
     returnval.review = `In 100 words or less, what is one positive and one negative of the movie '${nameOrURL}'.`;
     returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
-    returnval.similar = `Find and share the name of a movie similar to: ${nameOrURL}`;
+    returnval.similar = `Recommend only the name and year of release of one movie similar to: ${nameOrURL}`;
   }
   return returnval;
 };
