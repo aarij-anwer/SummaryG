@@ -16,8 +16,8 @@ import OneWordReview from './components/OneWordReview'
 import SimilarContent from './components/SimilarContent'
 import Loading from './components/Loading';
 import InitialLoad from './components/InitialLoad';
+import Material from './components/Material';
 import { v4 as uuidv4 } from 'uuid';
-import Material from './material';
 
 
 const inter = Inter({ subsets: ['latin'] })
