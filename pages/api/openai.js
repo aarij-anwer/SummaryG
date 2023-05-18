@@ -53,6 +53,15 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
   return result;
 }
 
+// Function to extract text after "\n\n"
+function extractTextAfterNewline(text) {
+  const splitText = text.split("\n\n");
+  if (splitText.length >= 2) {
+    return splitText[1];
+  }
+  return "";
+}
+
 //handler for the openai.js
 export default async function handler(req, res) {
 
@@ -81,13 +90,21 @@ export default async function handler(req, res) {
     console.log("prompt", prompt);
 
     //prompt for summary
-    const summary = await generateCompletions(prompt.summary, 3000);
+    const summaryResponse = await generateCompletions(prompt.summary, 3000);
+    const summary = extractTextAfterNewline(summaryResponse);
+
     //prompt for review
-    const review = await generateCompletions(prompt.review, 3000);
+    const reviewResponse = await generateCompletions(prompt.review, 3000);
+    const review = extractTextAfterNewline(reviewResponse);
+
     //prompt for oneword
-    const oneword = await generateCompletions(prompt.oneword, 3000);
+    const onewordResponse = await generateCompletions(prompt.oneword, 3000);
+    const oneword = extractTextAfterNewline(onewordResponse);
+
     //prompt for similar
-    const similar = await generateCompletions(prompt.similar, 3000);
+    const similarResponse = await generateCompletions(prompt.similar, 3000);
+    const similar = extractTextAfterNewline(similarResponse);
+
     //prompt for a title if a URL
     if (type == 'articles') {
       nameOrURL = await generateCompletions(prompt.title, 3000);
@@ -97,7 +114,7 @@ export default async function handler(req, res) {
     const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
 
     console.log("searchID", searchID);
-    // console.log("resultID", resultID);
+    console.log("resultID", resultID);
 
     res.status(200).json({ summary, review, oneword, similar, sID, rID });
   } catch (error) {
@@ -151,7 +168,7 @@ const checkURL = (variable) => {
   let answer = false;
   if (variable.startsWith('http://') || variable.startsWith('https://') || variable.startsWith('www.') || variable.startsWith('http://www.') || variable.startsWith('https://www.')) {
     answer = true;
-  } 
+  }
 
   return answer;
 };
