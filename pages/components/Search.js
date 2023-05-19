@@ -20,14 +20,17 @@ export default function Search(props) {
       //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
       const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
 
+      
       //update searchIdState, causing index.js to re-render
       props.onSubmit(result.data.sID);
-
+      
       console.log("result", result);
-
+      
       clearInputRef();
       props.setGuruCognating(false);
       console.log(`Guru says ${props.guruSays}`);
+      
+      const result2 = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
     }
   };
 
