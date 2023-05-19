@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function Material(props) {
   const anchor = "bottom";
@@ -48,11 +49,11 @@ export default function Material(props) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <List>
+      <List className="bg-gray-800 text-white">
         {items.map((text, index) => (
-          <ListItem key={index} disablePadding>
-          <ListItemButton onClick={() => handleItemClick(text.id)}>
-              <ListItemText primary={text.searchTerm} />
+          <ListItem key={index} className="py-2 hover:bg-gray-700 rounded" disablePadding>
+            <ListItemButton onClick={() => handleItemClick(text.id)}>
+              <ListItemText primary={text.searchTerm} primaryTypographyProps={{ style: { textTransform: 'none' } }} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -61,9 +62,20 @@ export default function Material(props) {
   );
 
   return (
-    <div className={"fixed left-[43.5%] bottom-0"}>
+    <div className={"w-full fixed left-1/2 bottom-0 transform -translate-x-1/2"}>
       <React.Fragment key={anchor}>
-        <Button onClick={toggleDrawer(anchor, true)}>{props.name}</Button>
+        <Button
+          style={{
+            textTransform: 'none',
+            fontSize: '18px',
+            borderRadius: 0
+          }}
+          className="w-full bg-gray-800 text-white hover:bg-gray-400 shadow-md pt-0 pr-0 pl-0 pb-4 group flex items-center justify-center"
+          onClick={toggleDrawer(anchor, true)}
+        >
+          <ArrowDropDownIcon className="transform transition-transform duration-200 group-hover:rotate-180" />
+          {props.name}
+        </Button>
         <Drawer
           anchor={anchor}
           open={state[anchor]}

@@ -2,10 +2,10 @@
 import { PrismaClient } from '@prisma/client';
 
 export default async function handler(req, res) {
-  
+
   if (req.method === "GET") {
     let searchID = Number(req.query.searchIdState)
-    
+
     if (searchID) {
       const prisma = new PrismaClient();
       const content = await prisma.Result.findMany({
@@ -24,7 +24,14 @@ export default async function handler(req, res) {
         }
       })
 
-      content[0].title = title[0].searchTerm;
+      let updatedTitle = title[0].searchTerm;
+
+      // Check the search type and modify the title accordingly
+      if (title[0].type !== "articles") {
+        updatedTitle = capitalizeInitials(updatedTitle);
+      }
+
+      content[0].title = updatedTitle;
 
       // console.log('content = ');
       // console.log(content);
@@ -34,4 +41,12 @@ export default async function handler(req, res) {
     }
   }
 
+  // Function to capitalize the initials of each word in the title
+  function capitalizeInitials(title) {
+    const words = title.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1).toLowerCase();
+    }
+    return words.join(" ");
+  }
 }
