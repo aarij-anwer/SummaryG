@@ -110,7 +110,8 @@ export default async function handler(req, res) {
     
     //prompt for a title if a URL
     if (type == 'articles') {
-      nameOrURL = await generateCompletions(prompt.title, 3000);
+      let name = await generateCompletions(prompt.title, 3000);
+      nameOrURL = extractTextAfterNewline(name);
       similar = `https://www.google.com/search?q=${nameOrURL.substring(2)}`;
     } else {
       const similarResponse = await generateCompletions(prompt.similar, 3000);
@@ -153,7 +154,7 @@ const createPrompt = (type, nameOrURL) => {
 
   if (type == 'articles') {
     returnval.summary = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
-    returnval.review = `Write three takeways in 100 words or less for following article: ${nameOrURL}`;
+    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 100 words or less for following article: ${nameOrURL}`;
     returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and URL for an article that is similar to the following article: ${nameOrURL}`;
     returnval.title = `What is the title or heading of the following article: ${nameOrURL}`;
