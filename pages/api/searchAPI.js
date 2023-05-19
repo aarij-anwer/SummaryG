@@ -25,6 +25,7 @@ export default async function handler(req, res) {
       })
 
       let updatedTitle = title[0].searchTerm;
+      let type = title[0].type;
 
       // Check the search type and modify the title accordingly
       if (title[0].type !== "articles") {
@@ -32,6 +33,7 @@ export default async function handler(req, res) {
       }
 
       content[0].title = updatedTitle;
+      content[0].type = type;
 
       // console.log('content = ');
       // console.log(content);

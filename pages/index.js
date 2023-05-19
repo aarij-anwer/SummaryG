@@ -34,7 +34,7 @@ export default function Home() {
   const [recentSearches, setRecentSearches] = useState();
   const [guruCognating, setGuruCognating] = useState(false);
   const [sessionID, setSessionID] = useState();
- 
+
   //client side sessionID
   useEffect(() => {
     const generatedSessionId = uuidv4();
@@ -52,6 +52,7 @@ export default function Home() {
           setReview(res.data.content[0].review);
           setOneWordReview(res.data.content[0].oneWordReview);
           setSimilarContent(res.data.content[0].similar);
+          setSearchState(res.data.content[0].type);
         } else {
           console.log('Response data structure is not as expected.')
         }
@@ -116,23 +117,27 @@ export default function Home() {
           />
           <Title
             searchIdState={searchIdState}
-            title={title} 
+            title={title}
           />
           <div className={"flex h-screen bg-gray-200 " + (!searchIdState ? 'hidden' : '')}>
             <div className={"flex-1 p-4 "}>
-              <br/>
+              <br />
               <Summary summary={summary} />
-              <br/>
+              <br />
               <Review review={review} searchType={searchState} />
             </div>
             <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>
-              <br/>
+              <br />
               <OneWordReview oneWordReview={oneWordReview} />
-              <br/>
+              <br />
               <SimilarContent similarContent={similarContent} />
             </div>
           </div>
-          <Material name="Recent Searches" recentSearches={recentSearches} setSearchIdState={setSearchIdState}/>
+          <Material
+            name="Recent Searches"
+            recentSearches={recentSearches}
+            setSearchIdState={setSearchIdState}
+          />
         </main>
       </div>
     </>
