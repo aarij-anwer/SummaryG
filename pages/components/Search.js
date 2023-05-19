@@ -54,7 +54,7 @@ export default function Search(props) {
         </div>
         <input
           id="default-search"
-          className={`block w-full p-4 pl-10 text-sm text-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${getSearchBarColor()} outline-none hide-search-cancel`}
+          className={`block w-full p-4 pl-10 text-sm text-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${getSearchBarColor()}`}
           type="search"
           ref={inputRef}
           placeholder={props.searchType === "articles" ? "Enter article URL" : `Enter ${props.searchType.slice(0, -1)} title`}
