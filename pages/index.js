@@ -124,7 +124,7 @@ export default function Home() {
               <br />
               <Summary summary={summary} />
               <br />
-              <Review review={review} searchType={searchState} />
+              <Review review={review} similarContent={similarContent} />
             </div>
             <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>
               <br />

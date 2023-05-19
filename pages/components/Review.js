@@ -1,5 +1,5 @@
 export default function Review(props) {
-  const label = props.searchType === "articles" ? "Takeaways" : "Review";
+  const label = props.similarContent?.includes("google") ? "Takeaways" : "Review";
 
   return (
     <div>
