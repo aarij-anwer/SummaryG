@@ -12,14 +12,15 @@ export default function Search(props) {
     e.preventDefault();
     if (inputRef.current.value) {
       props.setGuruCognating(true);
-      console.log(`Guru says ${props.guruSays}`);
+      // console.log(`Guru says ${props.guruSays}`);
       const userInput = inputRef.current.value;
       const searchType = props.searchType;
       const sessionID = props.sessionID;
 
       //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
-      const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
-
+      // const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
+      
+      const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
       
       //update searchIdState, causing index.js to re-render
       props.onSubmit(result.data.sID);
@@ -28,9 +29,8 @@ export default function Search(props) {
       
       clearInputRef();
       props.setGuruCognating(false);
-      console.log(`Guru says ${props.guruSays}`);
+      // console.log(`Guru says ${props.guruSays}`);
       
-      const result2 = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
     }
   };
 

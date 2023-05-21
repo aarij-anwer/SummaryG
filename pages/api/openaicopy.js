@@ -4,27 +4,13 @@ import { PrismaClient } from '@prisma/client';
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+
 const openai = new OpenAIApi(configuration);
 const prisma = new PrismaClient();
 let sID;
 let rID;
 
-//call openai with a prompt and max_tokens (size)
-// async function generateCompletions(prompt, max_tokens) {
-//   const completion = await openai.createCompletion({
-//     model: "text-davinci-003",
-//     prompt,
-//     temperature: 0.7,
-//     max_tokens,
-//     top_p: 1.0,
-//     frequency_penalty: 0.0,
-//     presence_penalty: 0.0,
-//   });
-//   return completion.data.choices[0].text;
-// }
-
 function generateCompletions(prompt, max_tokens) {
-
   return openai.createCompletion({
     model: "text-davinci-003",
     prompt,
@@ -40,7 +26,6 @@ function generateCompletions(prompt, max_tokens) {
     .catch((error) => {
       console.log(error);
     })
-
 }
 
 
@@ -75,11 +60,6 @@ async function addResultsToDB(searchID, summary, review, oneWordReview, similar)
 
 // Function to extract text after "\n\n"
 function extractTextAfterNewline(text) {
-  // const splitText = text.split("\n\n");
-  // if (splitText.length >= 2) {
-  //   return splitText[1];
-  // }
-  // return "";
   const index = text.indexOf('\n\n');
   return text.substring(index + 2);
 }
@@ -94,10 +74,7 @@ export default async function handler(req, res) {
   if (checkURL(nameOrURL)) {
     type = 'articles';
   }
-
-  // console.log("type", type);
-  // console.log("nameOrURL", nameOrURL);
-
+  
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -128,42 +105,31 @@ export default async function handler(req, res) {
 
     const promises = [summaryResponse, reviewResponse, onewordResponse, similarResponse];
 
+    // prompt for a title if a URL
+    if (type == 'articles') {
+      const name = generateCompletions(prompt.title, 3000);
+      promises.pop();
+      promises.push(name);
+    }
+
     Promise.all(promises)
       .then(async (all) => {
-        console.log("openAICopy", all);
+        // console.log("openAICopy", all);
         const summary = extractTextAfterNewline(all[0]);
         const review = extractTextAfterNewline(all[1]);
         const oneword = extractTextAfterNewline(all[2]);
-        const similar = extractTextAfterNewline(all[3]);
+        let similar;
+        if (type == 'articles') {
+          nameOrURL = extractTextAfterNewline(all[3]);
+          similar = `https://www.google.com/search?q=${nameOrURL}`;
+        } else {
+          similar = extractTextAfterNewline(all[3]);
+        }
         const searchID = await addSearchToDB(type, nameOrURL, sessionID);
         const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
         console.log("searchID", searchID);
         res.status(200).json({ summary, review, oneword, similar, sID, rID });
       });
-
-    //prompt for a title if a URL
-    // if (type == 'articles') {
-    //   let name = generateCompletions(prompt.title, 3000);
-    //   nameOrURL = extractTextAfterNewline(name);
-    //   similar = `https://www.google.com/search?q=${nameOrURL.substring(2)}`;
-    // } else {
-    //   const similarResponse = generateCompletions(prompt.similar, 3000);
-    //   similar = extractTextAfterNewline(similarResponse);
-    // }
-
-    // const summary = extractTextAfterNewline(summaryResponse);
-    // const review = extractTextAfterNewline(reviewResponse);
-    // const oneword = extractTextAfterNewline(onewordResponse);
-    // similar = extractTextAfterNewline(similarResponse);
-    
-    // const searchID = await addSearchToDB(type, nameOrURL, sessionID);
-    // const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
-    // console.log("searchID", searchID);
-    // console.log("resultID", resultID);
-
-    // res.status(200).json({ summary, review, oneword, similar, sID, rID });
-    
-    // res.status(200).json({});
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
