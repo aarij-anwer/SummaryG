@@ -74,7 +74,7 @@ export default async function handler(req, res) {
   if (checkURL(nameOrURL)) {
     type = 'articles';
   }
-  
+
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -84,65 +84,58 @@ export default async function handler(req, res) {
     return;
   }
 
-  try {
-    let prompt = createPrompt(type, nameOrURL);
-    console.log("prompt", prompt);
+  let prompt = createPrompt(type, nameOrURL);
+  console.log("prompt", prompt);
 
-    //prompt for summary
-    const summaryResponse = generateCompletions(prompt.summary, 3000);
-    // console.log(summaryResponse);
+  //prompt for summary
+  const summaryResponse = generateCompletions(prompt.summary, 3000);
+  // console.log(summaryResponse);
 
-    //prompt for review
-    const reviewResponse = generateCompletions(prompt.review, 3000);
-    // console.log(reviewResponse);
+  //prompt for review
+  const reviewResponse = generateCompletions(prompt.review, 3000);
+  // console.log(reviewResponse);
 
-    //prompt for oneword
-    const onewordResponse = generateCompletions(prompt.oneword, 3000);
+  //prompt for oneword
+  const onewordResponse = generateCompletions(prompt.oneword, 3000);
+  
+  const promises = [summaryResponse, reviewResponse, onewordResponse];
 
-    //prompt for similar
-    // let similar;
+  // prompt for a title if a URL
+  if (type == 'articles') {
+    const name = generateCompletions(prompt.title, 3000);
+    promises.push(name);
+  } else {
+    //otherwise, prompt for similar content
     const similarResponse = generateCompletions(prompt.similar, 3000);
+    promises.push(similarResponse);
+  }
 
-    const promises = [summaryResponse, reviewResponse, onewordResponse, similarResponse];
-
-    // prompt for a title if a URL
-    if (type == 'articles') {
-      const name = generateCompletions(prompt.title, 3000);
-      promises.pop();
-      promises.push(name);
-    }
-
-    Promise.all(promises)
-      .then(async (all) => {
-        // console.log("openAICopy", all);
-        const summary = extractTextAfterNewline(all[0]);
-        const review = extractTextAfterNewline(all[1]);
-        const oneword = extractTextAfterNewline(all[2]);
-        let similar;
-        if (type == 'articles') {
-          nameOrURL = extractTextAfterNewline(all[3]);
-          similar = `https://www.google.com/search?q=${nameOrURL}`;
-        } else {
-          similar = extractTextAfterNewline(all[3]);
-        }
-        const searchID = await addSearchToDB(type, nameOrURL, sessionID);
-        const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
-        console.log("searchID", searchID);
-        res.status(200).json({ summary, review, oneword, similar, sID, rID });
-      });
-  } catch (error) {
-    if (error.response) {
-      console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
-    } else {
+  Promise.all(promises)
+    .then(async (all) => {
+      // console.log("openAICopy", all);
+      const summary = extractTextAfterNewline(all[0]);
+      const review = extractTextAfterNewline(all[1]);
+      const oneword = extractTextAfterNewline(all[2]);
+      let similar;
+      if (type == 'articles') {
+        nameOrURL = extractTextAfterNewline(all[3]);
+        similar = `https://www.google.com/search?q=${nameOrURL}`;
+      } else {
+        similar = extractTextAfterNewline(all[3]);
+      }
+      const searchID = await addSearchToDB(type, nameOrURL, sessionID);
+      const resultID = await addResultsToDB(searchID.id, summary, review, oneword, similar);
+      console.log("searchID", searchID);
+      res.status(200).json({ summary, review, oneword, similar, sID, rID });
+    })
+    .catch((error) => {
       console.error(`Error with OpenAI API request: ${error.message}`);
       res.status(500).json({
         error: {
           message: 'An error occurred during your request.',
         }
-      });
-    }
-  }
+      })
+    })
 }
 
 /*
@@ -158,19 +151,19 @@ const createPrompt = (type, nameOrURL) => {
   let returnval = {};
 
   if (type == 'articles') {
-    returnval.summary = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
-    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 100 words or less for following article: ${nameOrURL}`;
+    returnval.summary = `Write an executive summary of 75 words for the following article: ${nameOrURL}`;
+    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 150 words or less for following article: ${nameOrURL}`;
     returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and URL for an article that is similar to the following article: ${nameOrURL}`;
     returnval.title = `What is the title or heading of the following article: ${nameOrURL}`;
   } else if (type == 'books') {
-    returnval.summary = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
-    returnval.review = `In 100 words or less, what is one positive and one negative of the book '${nameOrURL}'.`;
+    returnval.summary = `Write an executive summary of 75 words for the following book: ${nameOrURL}`;
+    returnval.review = `Write a review of the book '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the book.`;
     returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
     returnval.similar = `Recommend only the name of one book similar to: ${nameOrURL}`;
   } else {
-    returnval.summary = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
-    returnval.review = `In 100 words or less, what is one positive and one negative of the movie '${nameOrURL}'.`;
+    returnval.summary = `Write an executive summary of 75 words for the following movie: ${nameOrURL}`;
+    returnval.review = `Write a review of the movie '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the movie.`;
     returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and year of release of one movie similar to: ${nameOrURL}`;
   }
