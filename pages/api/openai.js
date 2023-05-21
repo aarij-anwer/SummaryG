@@ -92,17 +92,17 @@ export default async function handler(req, res) {
     console.log("prompt", prompt);
 
     //prompt for summary
-    const summaryResponse = await generateCompletions(prompt.summary, 3000);
+    const summaryResponse = await generateCompletions(prompt.summary, 1000);
     console.log(summaryResponse);
     const summary = extractTextAfterNewline(summaryResponse);
 
     //prompt for review
-    const reviewResponse = await generateCompletions(prompt.review, 3000);
+    const reviewResponse = await generateCompletions(prompt.review, 2000);
     console.log(reviewResponse);
     const review = extractTextAfterNewline(reviewResponse);
 
     //prompt for oneword
-    const onewordResponse = await generateCompletions(prompt.oneword, 3000);
+    const onewordResponse = await generateCompletions(prompt.oneword, 250);
     const oneword = extractTextAfterNewline(onewordResponse);
 
     //prompt for similar
@@ -110,11 +110,11 @@ export default async function handler(req, res) {
     
     //prompt for a title if a URL
     if (type == 'articles') {
-      let name = await generateCompletions(prompt.title, 3000);
+      let name = await generateCompletions(prompt.title, 100);
       nameOrURL = extractTextAfterNewline(name);
       similar = `https://www.google.com/search?q=${nameOrURL.substring(2)}`;
     } else {
-      const similarResponse = await generateCompletions(prompt.similar, 3000);
+      const similarResponse = await generateCompletions(prompt.similar, 100);
       similar = extractTextAfterNewline(similarResponse);
     }
 
@@ -153,19 +153,19 @@ const createPrompt = (type, nameOrURL) => {
   let returnval = {};
 
   if (type == 'articles') {
-    returnval.summary = `Write an executive summary of 50 words for the following article: ${nameOrURL}`;
-    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 100 words or less for following article: ${nameOrURL}`;
+    returnval.summary = `Write an executive summary of 75 words for the following article: ${nameOrURL}`;
+    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 150 words or less for following article: ${nameOrURL}. Response should be in HTML. Use <ol> to create the list appropriately.`;
     returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and URL for an article that is similar to the following article: ${nameOrURL}`;
     returnval.title = `What is the title or heading of the following article: ${nameOrURL}`;
   } else if (type == 'books') {
-    returnval.summary = `Write an executive summary of 50 words for the following book: ${nameOrURL}`;
-    returnval.review = `In 100 words or less, what is one positive and one negative of the book '${nameOrURL}'.`;
+    returnval.summary = `Write an executive summary of 75 words for the following book: ${nameOrURL}. Include the name of the author and main characters (if possible).`;
+    returnval.review = `Write a review of the book '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the book. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
     returnval.similar = `Recommend only the name of one book similar to: ${nameOrURL}`;
   } else {
-    returnval.summary = `Write an executive summary of 50 words for the following movie: ${nameOrURL}`;
-    returnval.review = `In 100 words or less, what is one positive and one negative of the movie '${nameOrURL}'.`;
+    returnval.summary = `Write an executive summary of 75 words for the following movie: ${nameOrURL}. Include the main cast and the director.`;
+    returnval.review = `Write a review of the movie '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the movie. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and year of release of one movie similar to: ${nameOrURL}`;
   }
