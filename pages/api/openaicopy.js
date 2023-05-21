@@ -88,25 +88,25 @@ export default async function handler(req, res) {
   console.log("prompt", prompt);
 
   //prompt for summary
-  const summaryResponse = generateCompletions(prompt.summary, 3000);
+  const summaryResponse = generateCompletions(prompt.summary, 1000);
   // console.log(summaryResponse);
 
   //prompt for review
-  const reviewResponse = generateCompletions(prompt.review, 3000);
+  const reviewResponse = generateCompletions(prompt.review, 2000);
   // console.log(reviewResponse);
 
   //prompt for oneword
-  const onewordResponse = generateCompletions(prompt.oneword, 3000);
+  const onewordResponse = generateCompletions(prompt.oneword, 250);
   
   const promises = [summaryResponse, reviewResponse, onewordResponse];
 
   // prompt for a title if a URL
   if (type == 'articles') {
-    const name = generateCompletions(prompt.title, 3000);
+    const name = generateCompletions(prompt.title, 100);
     promises.push(name);
   } else {
     //otherwise, prompt for similar content
-    const similarResponse = generateCompletions(prompt.similar, 3000);
+    const similarResponse = generateCompletions(prompt.similar, 100);
     promises.push(similarResponse);
   }
 
@@ -152,18 +152,18 @@ const createPrompt = (type, nameOrURL) => {
 
   if (type == 'articles') {
     returnval.summary = `Write an executive summary of 75 words for the following article: ${nameOrURL}`;
-    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 150 words or less for following article: ${nameOrURL}`;
+    returnval.review = `Using a numbered list (1, 2, 3), write three takeways in 150 words or less for following article: ${nameOrURL}. Response should be in HTML. Use <ol> to create the list appropriately.`;
     returnval.oneword = `Write the most important quote from the following article: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and URL for an article that is similar to the following article: ${nameOrURL}`;
     returnval.title = `What is the title or heading of the following article: ${nameOrURL}`;
   } else if (type == 'books') {
-    returnval.summary = `Write an executive summary of 75 words for the following book: ${nameOrURL}`;
-    returnval.review = `Write a review of the book '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the book.`;
+    returnval.summary = `Write an executive summary of 75 words for the following book: ${nameOrURL}. Include the name of the author and main characters (if possible).`;
+    returnval.review = `Write a review of the book '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the book. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     returnval.oneword = `Write a famous quote from the following book: ${nameOrURL}`;
     returnval.similar = `Recommend only the name of one book similar to: ${nameOrURL}`;
   } else {
-    returnval.summary = `Write an executive summary of 75 words for the following movie: ${nameOrURL}`;
-    returnval.review = `Write a review of the movie '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the movie.`;
+    returnval.summary = `Write an executive summary of 75 words for the following movie: ${nameOrURL}. Include the main cast and the director.`;
+    returnval.review = `Write a review of the movie '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the movie. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     returnval.oneword = `Write a famous quote from the following movie: ${nameOrURL}`;
     returnval.similar = `Recommend only the name and year of release of one movie similar to: ${nameOrURL}`;
   }
