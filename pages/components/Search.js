@@ -18,8 +18,11 @@ export default function Search(props) {
       const sessionID = props.sessionID;
 
       //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
+
+      // old API call, synchronous
       // const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
       
+      // new and improved API call, asynchronous
       const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
       
       //update searchIdState, causing index.js to re-render
