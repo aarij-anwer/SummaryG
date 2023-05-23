@@ -35,6 +35,11 @@
   - A book - 1984
 - Highlight (Andrew):
   - Summary Guru is a Single Page App that uses OpenAI to intelligently summarize articles, movies and books
+  - 4 parts of the summary guru app:
+    1. Summary - 75 word executive summary of the article, movie or book
+    2. Review - 150 word review of the book/movie, OR 3 takeaways from the article
+    3. Quote - famous quote from the book/movie, important quote from the article
+    4. Similar - a similar book/movie/article
   - 4 API async calls
   - Page is rendered when all the API calls return successfully
   - Search and Results are inserted into the database
