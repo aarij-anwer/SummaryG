@@ -88,15 +88,15 @@ export default async function handler(req, res) {
   console.log("prompt", prompt);
 
   //prompt for summary
-  const summaryResponse = generateCompletions(prompt.summary, 1000);
+  const summaryResponse = generateCompletions(prompt.summary, 250);
   // console.log(summaryResponse);
 
   //prompt for review
-  const reviewResponse = generateCompletions(prompt.review, 2000);
+  const reviewResponse = generateCompletions(prompt.review, 500);
   // console.log(reviewResponse);
 
   //prompt for oneword
-  const onewordResponse = generateCompletions(prompt.oneword, 250);
+  const onewordResponse = generateCompletions(prompt.oneword, 100);
   
   const promises = [summaryResponse, reviewResponse, onewordResponse];
 
