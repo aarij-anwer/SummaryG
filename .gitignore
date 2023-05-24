@@ -34,3 +34,4 @@ yarn-error.log*
 
 /prisma/dev.db
 prisma/dev.db
+planning/deployment_notes.md
