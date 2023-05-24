@@ -25,15 +25,20 @@ export default function Search(props) {
       // const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
       
       // new and improved API call, asynchronous
-      const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
-      
-      //update searchIdState, causing index.js to re-render
-      props.onSubmit(result.data.sID);
-      
-      console.log("result", result);
-      
-      clearInputRef();
-      props.setGuruCognating(false);
+      try {
+        const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
+        
+        //update searchIdState, causing index.js to re-render
+        props.onSubmit(result.data.sID);
+        
+        console.log("result", result);
+        
+        clearInputRef();
+      } catch (error) {
+        console.log("Error in the API call", error);
+      } finally {
+        props.setGuruCognating(false);
+      }
       // console.log(`Guru says ${props.guruSays}`);
       
     }
