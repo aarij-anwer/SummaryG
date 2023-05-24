@@ -7,3 +7,5 @@ postgresql://postgres:BK%2EBE%2AmSqt%2E%3Fyy7%40db.iseczcviuawtaptgbrqq.supabase
 
 postgres://postgres:BK.BE*mSqt.?yy7@db.iseczcviuawtaptgbrqq.supabase.co:6543/postgres
 postgres://postgres:BK%2EBE%2AmSqt%2E%3Fyy7%40db.iseczcviuawtaptgbrqq.supabase.co%3A6543/postgres?pgbouncer=true
+
+test
