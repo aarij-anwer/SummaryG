@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Summary Guru is a Single Page App that uses OpenAI to intelligently summarize articles, movies and books.
 
 ## Getting Started
 
