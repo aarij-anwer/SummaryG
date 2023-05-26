@@ -73,6 +73,8 @@ export default async function handler(req, res) {
 
   if (checkURL(nameOrURL)) {
     type = 'articles';
+  } else if (type == 'articles') {
+    type = 'movies';
   }
 
   if (!configuration.apiKey) {
@@ -146,8 +148,7 @@ export default async function handler(req, res) {
 */
 
 const createPrompt = (type, nameOrURL) => {
-  //singularize the type
-  // const singularizedType = singularizeType(type);
+
   let returnval = {};
 
   if (type == 'articles') {
