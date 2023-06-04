@@ -42,7 +42,7 @@ export default function Home() {
     sessionStorage.setItem('sessionId', generatedSessionId);
     setSessionID(generatedSessionId);
 
-    axios.get(`https://newsapi.org/v2/everything?q=keyword&apiKey=02456af49f244a95a316691091cd6257`)
+    axios.get(`https://newsapi.org/v2/everything?language=en&q=keyword&apiKey=02456af49f244a95a316691091cd6257`)
       .then((res) => {
         const randomNumber = Math.floor(Math.random() * 100);
         console.log(res.data.articles[randomNumber].url);
@@ -127,6 +127,10 @@ export default function Home() {
           />
           <InitialLoad
             searchIdState={searchIdState}
+            suggested={suggested}
+            setGuruCognating={setGuruCognating}
+            sessionID={sessionID} 
+            onSubmit={setSearchIdState}
           />
           <Title
             searchIdState={searchIdState}
