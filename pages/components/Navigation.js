@@ -11,8 +11,8 @@ export default function Navigation(props) {
   return (
     <nav className="flex items-center bg-gray-800 p-3 flex-wrap">
       <a href="#" className="p-2 mr-4 inline-flex items-center">
-        <span className="text-xl text-white font-bold uppercase tracking-wide">
-          Summary Guru
+        <span className="text-xl text-white font-bold tracking-wide">
+          SummaryAI
         </span>
       </a>
       <button

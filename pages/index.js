@@ -34,12 +34,25 @@ export default function Home() {
   const [recentSearches, setRecentSearches] = useState();
   const [guruCognating, setGuruCognating] = useState(false);
   const [sessionID, setSessionID] = useState();
+  const [suggested, setSuggested] = useState();
 
-  //client side sessionID
   useEffect(() => {
+    //client side sessionID
     const generatedSessionId = uuidv4();
     sessionStorage.setItem('sessionId', generatedSessionId);
     setSessionID(generatedSessionId);
+
+    axios.get(`https://newsapi.org/v2/everything?q=keyword&apiKey=02456af49f244a95a316691091cd6257`)
+      .then((res) => {
+        const randomNumber = Math.floor(Math.random() * 100);
+        console.log(res.data.articles[randomNumber].url);
+        const suggested = {
+          url: res.data.articles[randomNumber].url,
+          title: res.data.articles[randomNumber].title
+        }
+        setSuggested(suggested);
+      })
+
   }, []);
 
   //useEffect initialization
@@ -85,7 +98,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Summary Guru</title>
+        <title>SummaryAI</title>
         <meta name="description" content="Get rich summaries for articles and awesome reviews for movies/books using the power of ChatGPT!" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
