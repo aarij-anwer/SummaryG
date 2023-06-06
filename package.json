@@ -21,6 +21,7 @@
     "axios": "^1.4.0",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
+    "google-news-json": "^2.1.0",
     "html-react-parser": "^3.0.16",
     "next": "13.2.4",
     "openai": "^3.2.1",
@@ -29,7 +30,8 @@
     "react-icons": "^4.8.0",
     "styled-components": "^5.3.10",
     "tailwind": "^4.0.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xml2js": "^0.6.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

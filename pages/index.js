@@ -42,16 +42,21 @@ export default function Home() {
     sessionStorage.setItem('sessionId', generatedSessionId);
     setSessionID(generatedSessionId);
 
-    axios.get(`https://newsapi.org/v2/everything?language=en&q=keyword&apiKey=02456af49f244a95a316691091cd6257`)
-      .then((res) => {
-        const randomNumber = Math.floor(Math.random() * 100);
-        console.log(res.data.articles[randomNumber].url);
-        const suggested = {
-          url: res.data.articles[randomNumber].url,
-          title: res.data.articles[randomNumber].title
-        }
-        setSuggested(suggested);
-      })
+    axios.get('/api/newsapi') // Updated API endpoint URL
+    .then((res) => {
+      // console.log(res.data.rss.channel.item);
+      const randomNumber = Math.floor(Math.random() * res.data.rss.channel.item.length);
+      console.log(res.data.rss.channel.item[randomNumber].title);
+      console.log(res.data.rss.channel.item[randomNumber].link);
+      const suggested = {
+        url: res.data.rss.channel.item[randomNumber].link,
+        title: res.data.rss.channel.item[randomNumber].title
+      }
+      setSuggested(suggested);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   }, []);
 
@@ -129,7 +134,7 @@ export default function Home() {
             searchIdState={searchIdState}
             suggested={suggested}
             setGuruCognating={setGuruCognating}
-            sessionID={sessionID} 
+            sessionID={sessionID}
             onSubmit={setSearchIdState}
           />
           <Title
