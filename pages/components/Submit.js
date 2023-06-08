@@ -1,4 +1,5 @@
 import axios from "axios";
+import { defaultConfig } from "next/dist/server/config-shared";
 
 export async function submitHandler(props) {
   console.log("submitted data", props);
@@ -51,8 +52,8 @@ export async function submitHandler(props) {
         } else {
           similar = all[3].data.parsedResponse;
         }
-        const search = { type, nameOrURL, sessionID};
-        const results = { summary, review, oneword, similar};
+        const search = { type, nameOrURL, sessionID };
+        const results = { summary, review, oneword, similar };
 
         console.log("search in Submit", search);
         console.log("results in Submit", results);
@@ -107,3 +108,11 @@ const checkURL = (variable) => {
 
   return answer;
 };
+
+export default function Submit(props) {
+  return (
+    <></>
+  );
+}
+
+
