@@ -43,20 +43,20 @@ export default function Home() {
     setSessionID(generatedSessionId);
 
     axios.get('/api/newsapi') // Updated API endpoint URL
-    .then((res) => {
-      // console.log(res.data.rss.channel.item);
-      const randomNumber = Math.floor(Math.random() * res.data.rss.channel.item.length);
-      console.log(res.data.rss.channel.item[randomNumber].title);
-      console.log(res.data.rss.channel.item[randomNumber].link);
-      const suggested = {
-        url: res.data.rss.channel.item[randomNumber].link,
-        title: res.data.rss.channel.item[randomNumber].title
-      }
-      setSuggested(suggested);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then((res) => {
+        // console.log(res.data.rss.channel.item);
+        const randomNumber = Math.floor(Math.random() * res.data.rss.channel.item.length);
+        console.log(res.data.rss.channel.item[randomNumber].title);
+        console.log(res.data.rss.channel.item[randomNumber].link);
+        const suggested = {
+          url: res.data.rss.channel.item[randomNumber].link,
+          title: res.data.rss.channel.item[randomNumber].title
+        }
+        setSuggested(suggested);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
   }, []);
 
@@ -98,7 +98,6 @@ export default function Home() {
         console.error('Fetching data failed: ', error);
       });
   }, [searchIdState, sessionID]);
-
 
   return (
     <>
