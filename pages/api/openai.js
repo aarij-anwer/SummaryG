@@ -77,6 +77,8 @@ export default async function handler(req, res) {
     type = 'movies';
   }
 
+  console.log("here - 80");
+  
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -91,17 +93,15 @@ export default async function handler(req, res) {
 
   //prompt for summary
   const summaryResponse = generateCompletions(prompt.summary, 250);
-  // console.log(summaryResponse);
-
+  
   //prompt for review
   const reviewResponse = generateCompletions(prompt.review, 500);
-  // console.log(reviewResponse);
-
+  
   //prompt for oneword
   const onewordResponse = generateCompletions(prompt.oneword, 100);
   
   const promises = [summaryResponse, reviewResponse, onewordResponse];
-
+  
   // prompt for a title if a URL
   if (type == 'articles') {
     const name = generateCompletions(prompt.title, 100);
@@ -111,11 +111,12 @@ export default async function handler(req, res) {
     const similarResponse = generateCompletions(prompt.similar, 100);
     promises.push(similarResponse);
   }
-
+  
   Promise.all(promises)
-    .then(async (all) => {
-      // console.log("openAICopy", all);
-      const summary = extractTextAfterNewline(all[0]);
+  .then(async (all) => {
+    // console.log("openAICopy", all);
+    console.log(summaryResponse);
+    const summary = extractTextAfterNewline(all[0]);
       const review = extractTextAfterNewline(all[1]);
       const oneword = extractTextAfterNewline(all[2]);
       let similar;
