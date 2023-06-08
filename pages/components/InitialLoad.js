@@ -14,7 +14,7 @@ export default function InitialLoad(props) {
 
     // new and improved API call, asynchronous
     try {
-      const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
+      const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
 
       //update searchIdState, causing index.js to re-render
       props.onSubmit(result.data.sID);
