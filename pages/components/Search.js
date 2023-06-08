@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { submitHandler } from "./Submit";
+import { submitHandler } from "../Submit";
 
 export default function Search(props) {
   const inputRef = useRef();
