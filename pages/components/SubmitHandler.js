@@ -11,13 +11,6 @@ export async function submitHandler(props) {
   let nameOrURL = userInput;
 
   try {
-    // const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
-
-    //update searchIdState, causing index.js to re-render
-    // props.onSubmit(result.data.sID);
-
-    // console.log("result", result);
-
     props.setGuruCognating(true);
 
     const summaryResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=150`);
@@ -40,8 +33,6 @@ export async function submitHandler(props) {
 
     Promise.all(promises)
       .then(async (all) => {
-        // console.log("openAICopy", all);
-        // console.log(summaryResponse);
         const summary = all[0].data.parsedResponse;
         const review = all[1].data.parsedResponse;
         const oneword = all[2].data.parsedResponse;
@@ -53,10 +44,13 @@ export async function submitHandler(props) {
         } else {
           similar = all[3].data.parsedResponse;
         }
-        const search = { type, nameOrURL, sessionID };
         const results = { summary, review, oneword, similar };
 
-        console.log("search in Submit", search);
+        axios.get(`/api/searchdb/?type=${type}&searchTerm=${nameOrURL}&sessionID=${sessionID}`)
+          .then((res) => {
+            console.log("searchID", res.data.searchID);
+          })
+
         console.log("results in Submit", results);
       })
       .catch((error) => {
@@ -64,6 +58,7 @@ export async function submitHandler(props) {
       })
   } catch (error) {
     console.log("Error in the API call", error);
+    // handle error if API call on vercel is taking too long. 
   } finally {
     props.setGuruCognating(false);
   }
