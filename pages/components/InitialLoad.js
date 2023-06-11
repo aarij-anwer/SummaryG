@@ -1,4 +1,4 @@
-import { submitHandler } from "./Submit";
+import { submitHandler } from "./SubmitHandler";
 
 export default function InitialLoad(props) {
 

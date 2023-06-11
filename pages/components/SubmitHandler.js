@@ -3,7 +3,6 @@ import { defaultConfig } from "next/dist/server/config-shared";
 
 export async function submitHandler(props) {
   console.log("submitted data", props);
-  props.setGuruCognating(true);
   const userInput = props.userInput;
   const searchType = props.searchType;
   const sessionID = props.sessionID;
@@ -19,9 +18,11 @@ export async function submitHandler(props) {
 
     // console.log("result", result);
 
-    const summaryResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=200`);
+    props.setGuruCognating(true);
 
-    const reviewResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=350`);
+    const summaryResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=150`);
+
+    const reviewResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=250`);
 
     const onewordResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=oneword&token=100`);
 
@@ -60,14 +61,13 @@ export async function submitHandler(props) {
       })
       .catch((error) => {
         console.log("Error in Submit", error);
-      });
+      })
   } catch (error) {
     console.log("Error in the API call", error);
   } finally {
     props.setGuruCognating(false);
   }
-
-}
+};
 
 /*
   - summary = 50 word executive summary
@@ -110,9 +110,8 @@ const checkURL = (variable) => {
 };
 
 export default function Submit(props) {
+
   return (
     <></>
   );
 }
-
-

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { submitHandler } from "./Submit";
+import { submitHandler } from "./SubmitHandler";
 
 export default function Search(props) {
   const inputRef = useRef();
@@ -11,14 +11,15 @@ export default function Search(props) {
   };
 
   const handleSubmit = async (e) => {
+    props.setGuruCognating(true);
     e.preventDefault();
+
     if (inputRef.current.value) {
       const userInput = inputRef.current.value;
       const searchType = props.searchType;
       const sessionID = props.sessionID;
       const onSubmit = props.onSubmit;
       const setGuruCognating = props.setGuruCognating;
-
 
       submitHandler({ userInput, searchType, sessionID, onSubmit, setGuruCognating });
 

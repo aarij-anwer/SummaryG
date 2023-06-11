@@ -54,7 +54,7 @@ export default async function handler(req, res) {
   }
 
   let prompt = createPrompt(type, nameOrURL, typeOfPrompt);
-  console.log("prompt", prompt);
+  // console.log("prompt", prompt);
 
   try {
     const response = await generateCompletions(prompt, tokenSize);
