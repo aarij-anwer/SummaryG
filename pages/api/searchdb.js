@@ -14,6 +14,8 @@ async function addSearchToDB(type, searchTerm, sessionID) {
 }
 
 export default async function handler(req, res) {
+  console.log("Session ID in searchdb", req.query.sessionID);
   const searchID = await addSearchToDB(req.query.type, req.query.searchTerm, req.query.sessionID);
+  console.log("searchID in searchdb", searchID);
   res.status(200).json({ searchID });
 };

@@ -2,7 +2,7 @@ import axios from "axios";
 import { defaultConfig } from "next/dist/server/config-shared";
 
 export async function submitHandler(props) {
-  console.log("submitted data", props);
+  console.log("Submitted data in SubmitHandler", props);
   const userInput = props.userInput;
   const searchType = props.searchType;
   const sessionID = props.sessionID;
@@ -46,12 +46,23 @@ export async function submitHandler(props) {
         }
         const results = { summary, review, oneword, similar };
 
-        axios.get(`/api/searchdb/?type=${type}&searchTerm=${nameOrURL}&sessionID=${sessionID}`)
-          .then((res) => {
-            console.log("searchID", res.data.searchID);
-          })
+        const search = await axios.get(`/api/searchdb/?type=${type}&searchTerm=${nameOrURL}&sessionID=${sessionID}`);
 
-        console.log("results in Submit", results);
+        const searchID = search.data.searchID;
+
+        console.log("searchID in SubmitHandler", searchID);
+
+        const resultURL = "/api/resultsdb/?searchID=" + searchID + "&summary=" + summary + "&review=" + review + "&oneword=" + oneword + "&similar=" + similar;
+
+        console.log("resultURL in SubmitHandler", resultURL);
+
+        // this is where it's crashing
+        const result = await axios.get(resultURL);
+        const resultID = result.data.resultID;
+        
+        console.log("resultID in SubmitHandler", resultID);
+        props.onSubmit(resultID);
+
       })
       .catch((error) => {
         console.log("Error in Submit", error);
