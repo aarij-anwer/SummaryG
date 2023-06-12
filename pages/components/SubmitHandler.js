@@ -22,7 +22,7 @@ export async function submitHandler(props) {
 
   try {
     //summary
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=summary&token=110`)
+    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=summary&token=115`)
       .then((response) => {
         summary = response.data.parsedResponse;
       })
@@ -67,7 +67,7 @@ export async function submitHandler(props) {
 
     setTimeout(() => {
       //review 
-      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=review&token=135`)
+      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=review&token=170`)
         .then((response) => {
           review = response.data.parsedResponse;
         })

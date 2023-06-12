@@ -17,7 +17,7 @@ export default function Review(props) {
   return (
     <div>
       <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
-        {label}:
+        {label}
       </label>
       <div
         id="message"
