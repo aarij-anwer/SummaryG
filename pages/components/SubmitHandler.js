@@ -59,41 +59,42 @@ export async function submitHandler(props) {
         });
     }
 
-    //review 
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=135`)
-      .then((response) => {
-        review = response.data.parsedResponse;
-      })
-      .catch((error) => {
-        console.log("Review took too long", error);
-        review = "OpenAI took too long to respond. Our apologies. Please try the search again.";
-      })
-      .finally(async () => {
-        const search = await axios.post('/api/searchdb', {
-          type,
-          searchTerm: nameOrURL,
-          sessionID,
-          summary,
-          review,
-          oneWordReview: oneword,
-          similar
+    setTimeout(() => {
+      //review 
+      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=135`)
+        .then((response) => {
+          review = response.data.parsedResponse;
+        })
+        .catch((error) => {
+          console.log("Review took too long", error);
+          review = "OpenAI took too long to respond. Our apologies. Please try the search again.";
+        })
+        .finally(async () => {
+          const search = await axios.post('/api/searchdb', {
+            type,
+            searchTerm: nameOrURL,
+            sessionID,
+            summary,
+            review,
+            oneWordReview: oneword,
+            similar
+          });
+  
+          const searchID = search.data.searchID;
+          console.log("searchID in SubmitHandler", searchID);
+  
+          const resultID = search.data.resultID;
+          console.log("resultID in SubmitHandler", resultID);
+  
+          props.onSubmit(resultID);
+          props.setGuruCognating(false);
         });
+    }, 1000);
 
-        const searchID = search.data.searchID;
-        console.log("searchID in SubmitHandler", searchID);
-
-        const resultID = search.data.resultID;
-        console.log("resultID in SubmitHandler", resultID);
-
-        props.onSubmit(resultID);
-        props.setGuruCognating(false);
-      });
   } catch (error) {
     console.log("Something went wrong with OpenAI - see line 71");
     console.log(error);
-  } finally {
-    console.log("Finally");
-  }
+  } 
 }
 
 const capitalizeInitials = (title) => {
