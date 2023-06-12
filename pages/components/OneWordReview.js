@@ -3,7 +3,7 @@ export default function OneWordReview(props) {
   return (
     <div>
       <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
-        Quote:
+        Quote
       </label>
       <div
         id="message"

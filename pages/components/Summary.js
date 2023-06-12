@@ -3,7 +3,7 @@ export default function Summary(props) {
   return (
     <div>
       <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
-        Summary:
+        Summary
       </label>
       <div
         id="message"
