@@ -2,13 +2,19 @@ import axios from "axios";
 import { defaultConfig } from "next/dist/server/config-shared";
 
 export async function submitHandler(props) {
-  console.log("Submitted data in SubmitHandler", props);
   const userInput = props.userInput;
   const searchType = props.searchType;
   const sessionID = props.sessionID;
 
   let type = searchType;
   let nameOrURL = userInput;
+
+  if (checkURL(nameOrURL)) {
+    type = 'articles';
+  } else if (type == 'articles') {
+    type = 'movies';
+  }
+
   let summary = "OpenAI took too long to respond. Our apologies. Please try the search again.";
   let review = "OpenAI took too long to respond. Our apologies. Please try the search again.";
   let oneword = "OpenAI took too long to respond. Our apologies. Please try the search again.";
@@ -16,7 +22,7 @@ export async function submitHandler(props) {
 
   try {
     //summary
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=110`)
+    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=summary&token=110`)
       .then((response) => {
         summary = response.data.parsedResponse;
       })
@@ -26,7 +32,7 @@ export async function submitHandler(props) {
       });
 
     //oneword or quote
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=oneword&token=100`)
+    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=oneword&token=100`)
       .then((response) => {
         oneword = response.data.parsedResponse;
       })
@@ -36,19 +42,19 @@ export async function submitHandler(props) {
       });
 
     // prompt for a title if a URL
-    if (searchType == 'articles') {
-      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=title&token=100`)
+    if (type == 'articles') {
+      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=title&token=100`)
         .then((response) => {
           nameOrURL = response.data.parsedResponse;
           similar = `https://www.google.com/search?q=${nameOrURL}`;
         })
         .catch((error) => {
-          console.log("OneWord took too long", error);
+          console.log("nameOrURL took too long", error);
           similar = "OpenAI took too long to respond. Our apologies. Please try the search again.";
         });
     } else {
       //otherwise, prompt for similar content
-      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=similar&token=100`)
+      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=similar&token=100`)
         .then((response) => {
           similar = response.data.parsedResponse;
           nameOrURL = capitalizeInitials(nameOrURL);
@@ -61,7 +67,7 @@ export async function submitHandler(props) {
 
     setTimeout(() => {
       //review 
-      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=135`)
+      axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=review&token=135`)
         .then((response) => {
           review = response.data.parsedResponse;
         })
@@ -86,10 +92,10 @@ export async function submitHandler(props) {
           const resultID = search.data.resultID;
           console.log("resultID in SubmitHandler", resultID);
   
-          props.onSubmit(resultID);
+          props.onSubmit(searchID);
           props.setGuruCognating(false);
         });
-    }, 1000);
+    }, 3000);
 
   } catch (error) {
     console.log("Something went wrong with OpenAI - see line 71");
@@ -103,6 +109,15 @@ const capitalizeInitials = (title) => {
     words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1).toLowerCase();
   }
   return words.join(" ");
+};
+
+const checkURL = (variable) => {
+  let answer = false;
+  if (variable.startsWith('http://') || variable.startsWith('https://') || variable.startsWith('www.') || variable.startsWith('http://www.') || variable.startsWith('https://www.')) {
+    answer = true;
+  }
+
+  return answer;
 };
 
 export default function Submit(props) {

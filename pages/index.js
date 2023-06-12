@@ -59,22 +59,21 @@ export default function Home() {
 
   //useEffect initialization
   useEffect(() => {
-    // if (searchIdState) {
+    if (searchIdState) {
       axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
         .then((response) => {
-          // console.log("response", response);
-          setTitle(response.data.result.search.searchTerm);
-          // setSearchState(response.data.result.search.type);
-          setSummary(response.data.result.summary);
-          setReview(response.data.result.review);
-          setOneWordReview(response.data.result.oneWordReview);
-          setSimilarContent(response.data.result.similar);
+          setTitle(response.data.result.searchTerm);
+          setSearchState(response.data.result.type);
+          setSummary(response.data.result.Result.summary);
+          setReview(response.data.result.Result.review);
+          setOneWordReview(response.data.result.Result.oneWordReview);
+          setSimilarContent(response.data.result.Result.similar);
         })
         .catch((error) => {
           console.log("Error in getting data from searchAPI");
           console.error(error);
         });
-    // }
+    }
   }, [searchIdState]);
 
   //useEffect initialization for recent searches
