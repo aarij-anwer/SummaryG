@@ -16,7 +16,7 @@ export async function submitHandler(props) {
 
   try {
     //summary
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=130`)
+    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=110`)
       .then((response) => {
         summary = response.data.parsedResponse;
       })
@@ -59,7 +59,7 @@ export async function submitHandler(props) {
     }
 
     //review 
-    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=200`)
+    axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=135`)
       .then((response) => {
         review = response.data.parsedResponse;
       })
@@ -94,72 +94,6 @@ export async function submitHandler(props) {
     console.log("Finally");
   }
 }
-
-//   try {
-//     props.setGuruCognating(true);
-
-
-//     const summaryResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=summary&token=130`);
-
-//     const reviewResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=review&token=200`);
-
-//     const onewordResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=oneword&token=100`);
-
-//     const promises = [summaryResponse, reviewResponse, onewordResponse];
-
-//     // prompt for a title if a URL
-//     if (searchType == 'articles') {
-//       const name = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=title&token=100`);
-//       promises.push(name);
-//     } else {
-//       //otherwise, prompt for similar content
-//       const similarResponse = axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=similar&token=100`);
-//       promises.push(similarResponse);
-//     }
-
-//     Promise.all(promises)
-//       .then(async (all) => {
-//         const summary = all[0].data.parsedResponse;
-//         const review = all[1].data.parsedResponse;
-//         const oneword = all[2].data.parsedResponse;
-//         let similar;
-
-//         if (type == 'articles') {
-//           nameOrURL = all[3].data.parsedResponse;
-//           similar = `https://www.google.com/search?q=${nameOrURL}`;
-//         } else {
-//           similar = all[3].data.parsedResponse;
-//         }
-
-//         const search = await axios.post('/api/searchdb', {
-//           type,
-//           searchTerm: nameOrURL,
-//           sessionID,
-//           summary,
-//           review,
-//           oneWordReview: oneword,
-//           similar
-//         });
-
-//         const searchID = search.data.searchID;
-//         console.log("searchID in SubmitHandler", searchID);
-
-//         const resultID = search.data.resultID;
-//         console.log("resultID in SubmitHandler", resultID);
-
-//         props.onSubmit(resultID);
-
-//       })
-//       .catch((error) => {
-//         console.log("Error in Submit", error);
-//       })
-//   } catch (error) {
-//     console.log("Error in the API call", error);
-//     // handle error if API call on vercel is taking too long. 
-//   } finally {
-//     props.setGuruCognating(false);
-//   }
-// };
 
 export default function Submit(props) {
   return (
