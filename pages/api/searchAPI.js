@@ -4,19 +4,19 @@ import { PrismaClient } from '@prisma/client';
 export default async function handler(req, res) {
 
   if (req.method === "GET") {
-    let searchID = Number(req.query.searchIdState)
+    const searchID = req.query.searchIdState;
+
+    console.log(searchID);
 
     if (searchID) {
       const prisma = new PrismaClient();
-      const content = await prisma.Result.findMany({
+      const content = await prisma.Result.findUnique({
         where: {
-          searchID: {
-            equals: searchID
-          }
-        }
+          searchID: parseInt(searchID, 10),
+        },
       })
 
-      const title = await prisma.Search.findMany({
+      const title = await prisma.Search.findUnique({
         where: {
           id: {
             equals: searchID
@@ -35,8 +35,8 @@ export default async function handler(req, res) {
       content[0].title = updatedTitle;
       content[0].type = type;
 
-      // console.log('content = ');
-      // console.log(content);
+      console.log('content = ');
+      console.log(content);
       res.send(JSON.stringify({ content: content }))
     } else {
       res.send({ name: 'John Doe' });

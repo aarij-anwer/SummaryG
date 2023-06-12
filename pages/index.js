@@ -72,7 +72,8 @@ export default function Home() {
           setSimilarContent(res.data.content[0].similar);
           setSearchState(res.data.content[0].type);
         } else {
-          console.log('Response data structure is not as expected.')
+          console.log('Response data structure is not as expected.');
+          console.log(res);
         }
       })
       .catch(error => {

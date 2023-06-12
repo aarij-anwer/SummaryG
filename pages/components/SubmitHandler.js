@@ -44,25 +44,36 @@ export async function submitHandler(props) {
         } else {
           similar = all[3].data.parsedResponse;
         }
-        const results = { summary, review, oneword, similar };
+        // const results = { summary, review, oneword, similar };
 
-        const search = await axios.get(`/api/searchdb/?type=${type}&searchTerm=${nameOrURL}&sessionID=${sessionID}`);
+        // const searchURL = "/api/searchdb/?type=" + type + "&searchTerm=" + nameOrURL + "&sessionID=" + sessionID + "&summary=" + summary + "&review=" + review + "&oneword=" + oneword + "&similar=" + similar;
+
+        // console.log("searchURL in SubmitHandler", searchURL);
+
+        const search = await axios.post('/api/searchdb', {
+          type,
+          searchTerm: nameOrURL,
+          sessionID,
+          summary,
+          review, 
+          oneWordReview: oneword,
+          similar
+        });
 
         const searchID = search.data.searchID;
-
         console.log("searchID in SubmitHandler", searchID);
 
-        const resultURL = "/api/resultsdb/?searchID=" + searchID + "&summary=" + summary + "&review=" + review + "&oneword=" + oneword + "&similar=" + similar;
+        const resultID = search.data.resultID;
+        console.log("resultID in SubmitHandler", resultID);
+        
+        props.onSubmit(resultID);
+        
+        // const resultURL = "/api/resultsdb/?searchID=" + searchID + "&summary=" + summary + "&review=" + review + "&oneword=" + oneword + "&similar=" + similar;
 
-        console.log("resultURL in SubmitHandler", resultURL);
+        // console.log("resultURL in SubmitHandler", resultURL);
 
         // this is where it's crashing
-        const result = await axios.get(resultURL);
-        const resultID = result.data.resultID;
-        
-        console.log("resultID in SubmitHandler", resultID);
-        props.onSubmit(resultID);
-
+        // const result = await axios.get(resultURL);
       })
       .catch((error) => {
         console.log("Error in Submit", error);
