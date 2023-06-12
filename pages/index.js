@@ -34,58 +34,64 @@ export default function Home() {
   const [recentSearches, setRecentSearches] = useState();
   const [guruCognating, setGuruCognating] = useState(false);
   const [sessionID, setSessionID] = useState();
+  const [suggested, setSuggested] = useState();
 
-  //client side sessionID
   useEffect(() => {
+    //client side sessionID
     const generatedSessionId = uuidv4();
     sessionStorage.setItem('sessionId', generatedSessionId);
     setSessionID(generatedSessionId);
+
+    axios.get('/api/newsapi') // Updated API endpoint URL
+      .then((res) => {
+        const randomNumber = Math.floor(Math.random() * res.data.rss.channel.item.length);
+        const suggested = {
+          url: res.data.rss.channel.item[randomNumber].link,
+          title: res.data.rss.channel.item[randomNumber].title
+        }
+        setSuggested(suggested);
+      })
+      .catch((error) => {
+        console.log("Error gettings newsfeed");
+        console.error(error);
+      });
   }, []);
 
   //useEffect initialization
   useEffect(() => {
-    axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
-      .then(res => {
-        if (res.data && res.data.content && res.data.content[0]) {
-          setTitle(res.data.content[0].title);
-          setSummary(res.data.content[0].summary);
-          setReview(res.data.content[0].review);
-          setOneWordReview(res.data.content[0].oneWordReview);
-          setSimilarContent(res.data.content[0].similar);
-          setSearchState(res.data.content[0].type);
-        } else {
-          console.log('Response data structure is not as expected.')
-        }
-      })
-      .catch(error => {
-        console.error('Fetching data failed: ', error);
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
-      });
+    if (searchIdState) {
+      axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
+        .then((response) => {
+          setTitle(response.data.result.searchTerm);
+          setSearchState(response.data.result.type);
+          setSummary(response.data.result.Result.summary);
+          setReview(response.data.result.Result.review);
+          setOneWordReview(response.data.result.Result.oneWordReview);
+          setSimilarContent(response.data.result.Result.similar);
+        })
+        .catch((error) => {
+          console.log("Error in getting data from searchAPI");
+          console.error(error);
+        });
+    }
   }, [searchIdState]);
 
   //useEffect initialization for recent searches
   //pass sessionID to only display by sessionID
   useEffect(() => {
-    axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
-      .then(res => {
-        setRecentSearches(res.data.recentSearches);
-      })
-      .catch(error => {
-        console.error('Fetching data failed: ', error);
-      });
+      axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
+        .then(res => {
+          setRecentSearches(res.data.recentSearches);
+        })
+        .catch(error => {
+          console.error('Fetching data failed: ', error);
+        });
   }, [searchIdState, sessionID]);
-
 
   return (
     <>
       <Head>
-        <title>Summary Guru</title>
+        <title>SummaryAI</title>
         <meta name="description" content="Get rich summaries for articles and awesome reviews for movies/books using the power of ChatGPT!" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -114,6 +120,10 @@ export default function Home() {
           />
           <InitialLoad
             searchIdState={searchIdState}
+            suggested={suggested}
+            setGuruCognating={setGuruCognating}
+            sessionID={sessionID}
+            onSubmit={setSearchIdState}
           />
           <Title
             searchIdState={searchIdState}

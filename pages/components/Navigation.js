@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
@@ -10,11 +11,9 @@ export default function Navigation(props) {
 
   return (
     <nav className="flex items-center bg-gray-800 p-3 flex-wrap">
-      <a href="#" className="p-2 mr-4 inline-flex items-center">
-        <span className="text-xl text-white font-bold uppercase tracking-wide">
-          Summary Guru
-        </span>
-      </a>
+      <Link href="/" className="p-2 mr-4 inline-flex items-center text-2xl text-white font-bold tracking-wide">
+          SummaryAI
+      </Link>
       <button
         className="text-white inline-flex p-3 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler"
         onClick={handleToggle}

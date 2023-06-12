@@ -5,3 +5,20 @@
 .hide-search-cancel::-webkit-search-cancel-button {
   display: none !important;
 }
+
+.text {
+  color: blue;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+
+.text-xl {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.text-4xl {
+  padding-left: 2%;
+  padding-right: 2%;
+}

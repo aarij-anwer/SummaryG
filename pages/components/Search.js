@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import axios from "axios";
+import { submitHandler } from "./SubmitHandler";
 
 export default function Search(props) {
   const inputRef = useRef();
@@ -11,36 +11,19 @@ export default function Search(props) {
   };
 
   const handleSubmit = async (e) => {
+    props.setGuruCognating(true);
     e.preventDefault();
+
     if (inputRef.current.value) {
-      props.setGuruCognating(true);
-      // console.log(`Guru says ${props.guruSays}`);
       const userInput = inputRef.current.value;
       const searchType = props.searchType;
       const sessionID = props.sessionID;
+      const onSubmit = props.onSubmit;
+      const setGuruCognating = props.setGuruCognating;
 
-      //make API call to openai, passing userInput, searchType (article/movie/book) and a sessionID
+      submitHandler({ userInput, searchType, sessionID, onSubmit, setGuruCognating });
 
-      // old API call, synchronous
-      // const result = await axios.get(`/api/openai/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
-      
-      // new and improved API call, asynchronous
-      try {
-        const result = await axios.get(`/api/openaicopy/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}`);
-        
-        //update searchIdState, causing index.js to re-render
-        props.onSubmit(result.data.sID);
-        
-        console.log("result", result);
-        
-        clearInputRef();
-      } catch (error) {
-        console.log("Error in the API call", error);
-      } finally {
-        props.setGuruCognating(false);
-      }
-      // console.log(`Guru says ${props.guruSays}`);
-      
+      clearInputRef();
     }
   };
 
