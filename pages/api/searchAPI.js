@@ -57,30 +57,22 @@ export default async function handler(req, res) {
 // }
 
 async function getSearchAndResultBySearchID(searchID) {
-  const searchAndResult = await prisma.search.findUnique({
+  const searchAndResult = await prisma.result.findUnique({
     where: { id: searchID },
     select: {
-      searchTerm: true,
-      type: true,
-      Result: {
+      search: {
         select: {
-          summary: true,
-          review: true,
-          oneWordReview: true,
-          similar: true
-        }
-      }
-    }
+          searchTerm: true,
+          type: true,
+        },
+      },
+      summary: true,
+      review: true,
+      oneWordReview: true,
+      similar: true,
+    },
   });
 
   return searchAndResult;
 }
 
-// Function to capitalize the initials of each word in the title
-function capitalizeInitials(title) {
-  const words = title.split(" ");
-  for (let i = 0; i < words.length; i++) {
-    words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1).toLowerCase();
-  }
-  return words.join(" ");
-}
