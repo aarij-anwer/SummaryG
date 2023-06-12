@@ -44,10 +44,7 @@ export default function Home() {
 
     axios.get('/api/newsapi') // Updated API endpoint URL
       .then((res) => {
-        // console.log(res.data.rss.channel.item);
         const randomNumber = Math.floor(Math.random() * res.data.rss.channel.item.length);
-        console.log(res.data.rss.channel.item[randomNumber].title);
-        console.log(res.data.rss.channel.item[randomNumber].link);
         const suggested = {
           url: res.data.rss.channel.item[randomNumber].link,
           title: res.data.rss.channel.item[randomNumber].title
@@ -55,36 +52,20 @@ export default function Home() {
         setSuggested(suggested);
       })
       .catch((error) => {
+        console.log("Error gettings newsfeed");
         console.error(error);
       });
-
   }, []);
 
   //useEffect initialization
   useEffect(() => {
     axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
-      .then(res => {
-        if (res.data && res.data.content && res.data.content[0]) {
-          setTitle(res.data.content[0].title);
-          setSummary(res.data.content[0].summary);
-          setReview(res.data.content[0].review);
-          setOneWordReview(res.data.content[0].oneWordReview);
-          setSimilarContent(res.data.content[0].similar);
-          setSearchState(res.data.content[0].type);
-        } else {
-          console.log('Response data structure is not as expected.');
-          console.log(res);
-        }
+      .then((response) => {
+        setTitle(response.searchTerm);
       })
-      .catch(error => {
-        console.error('Fetching data failed: ', error);
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
+      .catch((error) => {
+        console.log("Error in getting data from searchAPI");
+        console.error(error);
       });
   }, [searchIdState]);
 

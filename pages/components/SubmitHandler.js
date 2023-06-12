@@ -51,6 +51,7 @@ export async function submitHandler(props) {
       axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${searchType}&sessionID=${sessionID}&type=similar&token=100`)
         .then((response) => {
           similar = response.data.parsedResponse;
+          nameOrURL = capitalizeInitials(nameOrURL);
         })
         .catch((error) => {
           console.log("Similar took too long", error);
@@ -94,6 +95,14 @@ export async function submitHandler(props) {
     console.log("Finally");
   }
 }
+
+const capitalizeInitials = (title) => {
+  const words = title.split(" ");
+  for (let i = 0; i < words.length; i++) {
+    words[i] = words[i].charAt(0).toUpperCase() + words[i].substring(1).toLowerCase();
+  }
+  return words.join(" ");
+};
 
 export default function Submit(props) {
   return (
