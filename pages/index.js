@@ -59,26 +59,34 @@ export default function Home() {
 
   //useEffect initialization
   useEffect(() => {
-    axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
-      .then((response) => {
-        setTitle(response.searchTerm);
-      })
-      .catch((error) => {
-        console.log("Error in getting data from searchAPI");
-        console.error(error);
-      });
+    // if (searchIdState) {
+      axios.get(`/api/searchAPI/?searchIdState=${searchIdState}`)
+        .then((response) => {
+          // console.log("response", response);
+          setTitle(response.data.result.search.searchTerm);
+          // setSearchState(response.data.result.search.type);
+          setSummary(response.data.result.summary);
+          setReview(response.data.result.review);
+          setOneWordReview(response.data.result.oneWordReview);
+          setSimilarContent(response.data.result.similar);
+        })
+        .catch((error) => {
+          console.log("Error in getting data from searchAPI");
+          console.error(error);
+        });
+    // }
   }, [searchIdState]);
 
   //useEffect initialization for recent searches
   //pass sessionID to only display by sessionID
   useEffect(() => {
-    axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
-      .then(res => {
-        setRecentSearches(res.data.recentSearches);
-      })
-      .catch(error => {
-        console.error('Fetching data failed: ', error);
-      });
+      axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
+        .then(res => {
+          setRecentSearches(res.data.recentSearches);
+        })
+        .catch(error => {
+          console.error('Fetching data failed: ', error);
+        });
   }, [searchIdState, sessionID]);
 
   return (
