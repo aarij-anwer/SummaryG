@@ -85,7 +85,7 @@ const createPrompt = (type, nameOrURL, typeOfPrompt) => {
     if (typeOfPrompt == 'summary') {
       returnval = `Write an executive summary of 75 words for the following article: ${nameOrURL}`;
     } else if (typeOfPrompt == 'review') {
-      returnval = `Using a numbered list (1, 2, 3), write three takeways in 150 words or less for following article: ${nameOrURL}. Response should be in HTML. Use <ol> to create the list appropriately.`;
+      returnval = `Using a numbered list (1, 2, 3), write three takeways in 125 words or less for following article: ${nameOrURL}. Response should be in HTML. Use <ol> to create the list appropriately.`;
     } else if (typeOfPrompt == 'oneword') {
       returnval = `Write the most important quote from the following article: ${nameOrURL}`;
     } else if (typeOfPrompt == 'similar') {
@@ -97,7 +97,7 @@ const createPrompt = (type, nameOrURL, typeOfPrompt) => {
     if (typeOfPrompt == 'summary') {
       returnval = `Write an executive summary of 75 words for the following book: ${nameOrURL}. Include the name of the author and main characters (if possible).`;
     } else if (typeOfPrompt == 'review') {
-      returnval = `Write a review of the book '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the book. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
+      returnval = `Write a review of the book '${nameOrURL}' in 125 words or less. Include one positive and one negative aspect of the book. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     } else if (typeOfPrompt == 'oneword') {
       returnval = `Write a famous quote from the following book: ${nameOrURL}`;
     } else if (typeOfPrompt == 'similar') {
@@ -107,7 +107,7 @@ const createPrompt = (type, nameOrURL, typeOfPrompt) => {
     if (typeOfPrompt == 'summary') {
       returnval = `Write an executive summary of 75 words for the following movie: ${nameOrURL}. Include the main cast and the director.`;
     } else if (typeOfPrompt == 'review') {
-      returnval = `Write a review of the movie '${nameOrURL}' in 150 words or less. Include one positive and one negative aspect of the movie. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
+      returnval = `Write a review of the movie '${nameOrURL}' in 125 words or less. Include one positive and one negative aspect of the movie. Response should be in HTML. Use <p> to create paragraphs appropriately.`;
     } else if (typeOfPrompt == 'oneword') {
       returnval = `Write a famous quote from the following movie: ${nameOrURL}`;
     } else if (typeOfPrompt == 'similar') {
