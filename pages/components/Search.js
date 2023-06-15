@@ -11,7 +11,7 @@ export default function Search(props) {
   };
 
   const handleSubmit = async (e) => {
-    props.setGuruCognating(true);
+    // props.setGuruCognating(true);
     e.preventDefault();
 
     if (inputRef.current.value) {
