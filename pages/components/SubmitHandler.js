@@ -2,6 +2,8 @@ import axios from "axios";
 import { defaultConfig } from "next/dist/server/config-shared";
 
 export async function submitHandler(props) {
+  props.setGuruCognating("SummaryAI is calling ChatGPT...");
+
   const userInput = props.userInput;
   const searchType = props.searchType;
   const sessionID = props.sessionID;
@@ -22,6 +24,7 @@ export async function submitHandler(props) {
 
   try {
     //summary
+    props.setGuruCognating("ChatGPT is generating the summary...");
     axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=summary&token=115`)
       .then((response) => {
         summary = response.data.parsedResponse;
@@ -66,6 +69,13 @@ export async function submitHandler(props) {
     }
 
     setTimeout(() => {
+      if (type == 'articles') {
+        props.setGuruCognating("...now writing 3 takeaways from the article...");
+      } else if (type == 'movies') {
+        props.setGuruCognating("...now writing the review for the movie " + capitalizeInitials(userInput) + "...");
+      } else {
+        props.setGuruCognating("...now writing the review for the book " + capitalizeInitials(userInput) + "...");
+      }
       //review 
       axios.get(`/api/apicalls/?userInput=${userInput}&searchType=${type}&sessionID=${sessionID}&type=review&token=170`)
         .then((response) => {
@@ -76,6 +86,8 @@ export async function submitHandler(props) {
           review = "OpenAI took too long to respond. Our apologies. Please try the search again.";
         })
         .finally(async () => {
+          props.setGuruCognating("...Done!");
+
           const search = await axios.post('/api/searchdb', {
             type,
             searchTerm: nameOrURL,

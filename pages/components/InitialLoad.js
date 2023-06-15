@@ -5,7 +5,7 @@ export default function InitialLoad(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    props.setGuruCognating(true);
+    // props.setGuruCognating("SummaryAI is calling ChatGPT...");
     const userInput = props.suggested?.url;
     const searchType = "articles";
     const sessionID = props.sessionID;
