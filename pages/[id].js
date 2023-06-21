@@ -12,8 +12,6 @@ import { PrismaClient } from '@prisma/client';
 export default function getID(props) {
   const { id, title, summary, review, oneWordReview, similarContent } = props;
 
-  const [searchIdState, setSearchIdState] = useState(parseInt(id, 10));
-
   return (
     <>
       <Head>
@@ -26,18 +24,18 @@ export default function getID(props) {
         <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap" rel="stylesheet" />
       </Head>
       <Title
-        searchIdState={searchIdState}
+        searchIdState={id}
         title={title}
       />
       <div className="flex">
-        <div className={"flex h-screen bg-gray-200 " + (!searchIdState ? 'hidden' : '')}>
+        <div className={"flex h-screen bg-gray-200 " + (!id ? 'hidden' : '')}>
           <div className={"flex-1 p-4 "}>
             <br />
             <Summary summary={summary} />
             <br />
             <Review review={review} similarContent={similarContent} />
           </div>
-          <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>
+          <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!id ? 'hidden' : '')}>
             <br />
             <OneWordReview oneWordReview={oneWordReview} />
             <br />
@@ -60,8 +58,6 @@ const capitalizeInitials = (title) => {
 export async function getServerSideProps(context) {
   const { id } = context.query;
 
-  // const response = await axios.get(`/api/searchAPI/?searchIdState=${id}`);
-  // const data = response.data;
   const prisma = new PrismaClient();
   const searchID = parseInt(id, 10);
 
@@ -87,7 +83,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      id,
+      id: parseInt(id, 10),
       title: capitalizeInitials(data.searchTerm),
       summary: data.Result.summary,
       review: data.Result.review,

@@ -18,6 +18,7 @@ import Loading from './components/Loading';
 import InitialLoad from './components/InitialLoad';
 import Material from './components/Material';
 import { v4 as uuidv4 } from 'uuid';
+import Link from "next/link";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -79,13 +80,13 @@ export default function Home() {
   //useEffect initialization for recent searches
   //pass sessionID to only display by sessionID
   useEffect(() => {
-      axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
-        .then(res => {
-          setRecentSearches(res.data.recentSearches);
-        })
-        .catch(error => {
-          console.error('Fetching data failed: ', error);
-        });
+    axios.get(`api/recentSearchAPI?sessionID=${sessionID}`)
+      .then(res => {
+        setRecentSearches(res.data.recentSearches);
+      })
+      .catch(error => {
+        console.error('Fetching data failed: ', error);
+      });
   }, [searchIdState, sessionID]);
 
   return (
@@ -135,6 +136,8 @@ export default function Home() {
               <Summary summary={summary} />
               <br />
               <Review review={review} similarContent={similarContent} />
+              <Link href={`/${searchIdState}`}>Click here to share the results!
+              </Link>
             </div>
             <div className={"relative overflow-x-auto shadow-md min-w-[200px] max-w-[400px] sm:w-auto w-1/4 mt-4 pr-4 pl-4 text-sm text-left text-gray-500 dark:text-gray-400" + (!searchIdState ? 'hidden' : '')}>
               <br />
